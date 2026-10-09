@@ -1,0 +1,189 @@
+/* TerraOS 9.7 · Design System + experiencia territorial */
+:root{
+  --color-primary:#225e4f;
+  --color-primary-strong:#173c36;
+  --color-secondary:#edf3ee;
+  --color-accent:#b48d55;
+  --color-terra:#a95b3d;
+  --color-success:#2f765f;
+  --color-warning:#b07a22;
+  --color-danger:#a33f2b;
+  --color-background:#f4f2eb;
+  --color-surface:#ffffff;
+  --color-surface-elevated:#fbfcfa;
+  --color-border:#dce2da;
+  --color-text:#173c36;
+  --color-text-muted:#68766e;
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;
+  --space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;
+  --radius-sm:7px;--radius-md:11px;--radius-lg:16px;--radius-xl:22px;
+  --shadow-sm:0 2px 10px rgba(23,60,54,.06);
+  --shadow-md:0 10px 28px rgba(23,60,54,.09);
+  --focus:0 0 0 3px rgba(77,153,126,.24);
+}
+html{scroll-behavior:smooth}
+body{background:var(--color-background);color:var(--color-text)}
+button,a,input,select,textarea,summary{outline-color:var(--color-primary)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:0;box-shadow:var(--focus)}
+
+/* Global header hierarchy */
+header,.moduleHeader{background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--color-border)}
+.brand{position:relative}.brand img{filter:saturate(.92)}
+.brand small{color:var(--color-text-muted)}
+.primaryNav,.moduleNav{align-items:center}
+.primaryNav a,.moduleNav a{border-radius:var(--radius-sm);transition:background .15s ease,color .15s ease,border-color .15s ease}
+.primaryNav a:hover,.moduleNav a:hover{background:var(--color-secondary);color:var(--color-primary)}
+.primaryNav a.active,.moduleNav a.active{background:var(--color-secondary);border-bottom-color:var(--color-primary)}
+.soilHeaderBtn{font-weight:800!important;background:var(--color-primary)!important;color:#fff!important;border:1px solid var(--color-primary)!important;border-radius:var(--radius-sm)!important;min-height:40px;padding:9px 13px!important;text-decoration:none!important;white-space:nowrap}
+.soilHeaderBtn:hover{background:var(--color-primary-strong)!important;transform:translateY(-1px)}
+#menuBtn{background:#f3f5f1;border:1px solid var(--color-border);color:var(--color-text);border-radius:var(--radius-sm);font-weight:800;min-height:40px;padding:9px 12px}
+.municipalityMenu>summary{background:var(--color-secondary);color:var(--color-primary);border:1px solid #b9cdbd;font-size:11px;letter-spacing:.25px}
+.municipalityMenu>summary:hover{background:#e4eee7}
+.municipalityPanel{border-color:var(--color-border);box-shadow:var(--shadow-md)}
+.municipalityPanel label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--color-text-muted);font-weight:800}
+.municipalityPanel select{border:1px solid #b8c9bd;background:#fff;color:var(--color-text);font-size:13px;min-height:42px}
+.municipalityStatus{font-size:11px}
+
+/* Main soil workspace */
+main{background:var(--color-background)}
+#panel{background:var(--color-surface);border-right:1px solid var(--color-border);box-shadow:5px 0 24px rgba(23,60,54,.035)}
+#panel h1{letter-spacing:-.03em}
+#panel .intro{max-width:42ch;color:var(--color-text-muted)}
+.contactInline{display:block;background:#f7f9f5;border:1px solid var(--color-border);border-radius:var(--radius-md);padding:10px 12px;margin:14px 0;color:var(--color-primary);font-weight:700;text-decoration:none}
+.soilTabs{display:grid!important;gap:4px!important;margin:18px 0 20px!important;padding:4px!important;background:#edf2ed!important;border:1px solid var(--color-border)!important;border-radius:var(--radius-md)!important}
+.soilTabs button{min-height:46px!important;color:var(--color-text-muted);font-size:10px!important;letter-spacing:.2px;background:transparent!important}
+.soilTabs button.active{color:var(--color-primary)!important;background:#fff!important;box-shadow:var(--shadow-sm)!important}
+#consult,#search,#project{animation:terraFade .16s ease both}
+@keyframes terraFade{from{opacity:.4;transform:translateY(2px)}to{opacity:1;transform:none}}
+#panel label{color:var(--color-text)}
+#panel input,#panel select{border-color:#c8d4cc;border-radius:var(--radius-sm);min-height:40px}
+#panel input:focus,#panel select:focus{box-shadow:var(--focus);outline:0}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.tools button{background:#f2f5f1;border-color:var(--color-border);color:var(--color-text);font-weight:700}
+.tools button:hover{background:#e7eee9}
+.inline{gap:8px}
+.inline .primary,.primary.wide,#recalculate{background:var(--color-primary)!important;border-color:var(--color-primary)!important;font-weight:800}
+.hint{color:var(--color-text-muted)!important}
+.criterion{background:#fbfcfa;border-radius:var(--radius-md)!important;padding:12px!important}
+.projectActions{gap:10px!important}
+.projectActions .actionCard{background:linear-gradient(180deg,#fff,#fbfcfa);border-color:var(--color-border);box-shadow:var(--shadow-sm);text-decoration:none}
+.projectActions .actionCard:hover{border-color:#b8cbbd;box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.projectActions .actionCard strong{display:block;font-size:14px;margin:5px 0}
+.projectActions .actionCard small{color:var(--color-text-muted);line-height:1.45}
+#notice{border:1px solid #d9e3d8!important;border-left:4px solid var(--color-success)!important;border-radius:var(--radius-md)!important}
+
+/* Map as the territorial stage */
+.mapWrap{background:#dfe7df;position:relative}
+.mapTop{z-index:700}
+.mapLabel{background:rgba(255,255,255,.92)!important;border:1px solid rgba(220,226,218,.9);box-shadow:var(--shadow-md)!important}
+.mapLabel .dot{box-shadow:0 0 0 4px rgba(34,94,79,.12)}
+.mapTools{display:flex!important;align-items:flex-start;gap:6px!important;flex-wrap:wrap;max-width:min(620px,calc(100% - 110px));padding:6px!important;background:rgba(255,255,255,.88);border:1px solid rgba(220,226,218,.92);border-radius:var(--radius-lg);backdrop-filter:blur(12px);box-shadow:var(--shadow-md)}
+.mapToolGroup{display:flex;gap:5px;align-items:center;padding:2px;border-right:1px solid #dfe5df}.mapToolGroup:last-child{border-right:0}
+.mapToolGroup[data-group="map"] button{background:#edf3ee;color:var(--color-primary);border-color:#c5d5c8}
+.mapToolGroup[data-group="tools"] button{background:#fff;color:var(--color-text);border-color:var(--color-border)}
+.mapToolGroup[data-group="view"] button{background:#f4efe5;color:#6b512e;border-color:#ddcda9}
+.mapTools button{min-height:34px!important;padding:7px 9px!important;border-radius:8px!important;font-size:10px!important;font-weight:800!important;box-shadow:none!important}
+.mapTools button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 3px 10px rgba(23,60,54,.08)!important}
+.mapTools button:disabled{opacity:.45}
+#decisionMenuButton{background:#f2eadc!important;color:#694b27!important;border-color:#d6bd92!important}
+.mapMenu{background:rgba(255,255,255,.97)!important;border-color:var(--color-border)!important;box-shadow:0 16px 44px rgba(23,60,54,.13)!important}
+.mapMenuHead strong{font-size:14px!important}.mapMenuHead button{border:1px solid var(--color-border);color:var(--color-text);font-weight:900}
+.mapMenuCheck input{accent-color:var(--color-primary)}
+.mapMenuCheck:hover{background:#f1f5f0!important}
+.mapLegend{background:rgba(255,255,255,.94)!important;border:1px solid var(--color-border)!important;box-shadow:var(--shadow-md)!important}
+.mapBottom{font-size:10px!important;color:#4d6259!important}
+
+/* Module shell */
+.moduleHeader{min-height:70px!important;padding:8px clamp(14px,2.5vw,30px)!important;gap:10px!important}
+.moduleHeader .brand{margin-right:4px}.moduleHeader .moduleNav{gap:4px}
+.moduleHeader .back{border:1px solid var(--color-border);border-radius:var(--radius-sm);padding:8px 10px;text-decoration:none;color:var(--color-text);font-weight:700;background:#fff}
+.moduleHeader .back:hover{background:#f1f4ef}
+.moduleContext{display:flex;align-items:center;gap:6px;color:var(--color-text-muted);font-size:10px;white-space:nowrap;border-left:1px solid var(--color-border);padding-left:10px}
+.moduleContext strong{color:var(--color-text)}
+.moduleMap{position:relative!important;background:#dfe7df!important}
+.moduleMap::after{content:'VISOR TERRITORIAL';position:absolute;left:16px;bottom:12px;padding:5px 8px;border-radius:6px;background:rgba(23,60,54,.78);color:#fff;font-size:8px;letter-spacing:1.2px;pointer-events:none}
+.moduleMain{background:var(--color-background);padding-top:clamp(30px,4vw,56px)!important}
+.moduleMain .hero{padding-bottom:clamp(28px,4vw,48px)!important}
+.moduleMain .hero h1{letter-spacing:-.045em!important;color:var(--color-primary-strong)}
+.moduleMain .hero p{max-width:68ch}
+
+/* Consultancy */
+.consultPage .consultHero{align-items:center!important}
+.consultPage .consultHero figure{margin:0;border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-md);border:1px solid var(--color-border)}
+.consultPage .consultHero figure img{display:block;width:100%;object-fit:cover}
+.consultPage .professional{background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:14px;box-shadow:var(--shadow-sm)}
+.consultPage .serviceSection{margin-top:12px}
+.consultPage .serviceGrid .primaryLink{display:flex;min-height:145px;flex-direction:column;justify-content:flex-end;text-decoration:none;background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-md);padding:16px;box-shadow:var(--shadow-sm);transition:.15s ease}
+.consultPage .serviceGrid .primaryLink:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:#b9cdbd}
+.consultPage .methodSection,.consultPage .contactSection{background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:22px;box-shadow:var(--shadow-sm)}
+
+/* ARCA */
+.arcaPage .moduleMain{background:linear-gradient(180deg,#f5f3ed,#efede5)!important}
+.arcaPage .hero{max-width:960px}
+.arcaPage .productGrid{align-items:stretch}
+.arcaPage .product{display:flex;flex-direction:column;background:rgba(255,255,255,.92);box-shadow:var(--shadow-sm)!important}
+.arcaPage .product:hover{box-shadow:var(--shadow-md)!important;transform:translateY(-2px);transition:.15s ease}
+.arcaPage .product .wa{margin-top:auto}
+.arcaPage .productPlaceholder{background:#e7ece4}
+.arcaPage .notice{border-left-color:var(--color-accent)!important}
+
+/* Project */
+.projectPage .steps article{position:relative;background:#fff;border:1px solid var(--color-border);box-shadow:var(--shadow-sm)!important}
+.projectPage .steps article::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:var(--color-primary);color:#fff;display:grid;place-items:center;font-size:10px;z-index:2}
+.projectPage .steps article:last-child::after{display:none}
+.projectPage .cards .actionCard{display:flex;flex-direction:column;justify-content:flex-start;background:#fff;box-shadow:var(--shadow-sm)}
+.projectPage .cards .actionCard:hover{border-color:#b9cdbd}
+
+/* Territory */
+.territoryPage .moduleMain{background:#edf1e9!important}
+.territoryPage .territoryCard{background:#fff!important}
+.territoryPage .filters button{font-weight:700;transition:.15s ease}
+.territoryPage .filters button:hover{background:#dfe9e2}
+.territoryPage .arPanel{background:linear-gradient(145deg,#173c36,#225e4f)!important;box-shadow:var(--shadow-md)!important}
+.territoryPage .sensitive{border-radius:var(--radius-md)}
+
+/* Professional forms */
+body:has(.stepnav),body:has(#licenseForm),body:has(#queue){background:var(--color-background)!important}
+body:has(.stepnav) header,body:has(#licenseForm)>header,body:has(#queue)>header{box-shadow:var(--shadow-sm)}
+body:has(.stepnav) main,body:has(#licenseForm) main{max-width:1440px}
+body:has(.stepnav) section,body:has(#licenseForm) section{border-color:var(--color-border);box-shadow:var(--shadow-sm)}
+.stepnav{position:sticky!important;top:64px;z-index:4;padding:8px!important;background:rgba(255,255,255,.94);border:1px solid var(--color-border);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);backdrop-filter:blur(10px)}
+.stepnav a{font-weight:700!important;border:1px solid transparent;transition:.15s ease}.stepnav a:hover{border-color:#b9cdbd;background:#dfeae3}
+body:has(#licenseForm) .bar,body:has(#queue) .toolbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--color-border);box-shadow:var(--shadow-sm)}
+body:has(#licenseForm) main{grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr)!important}
+body:has(#licenseForm) .preview{border-color:var(--color-border);box-shadow:var(--shadow-md)}
+body:has(#queue) .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+body:has(#queue) .stats article{border:1px solid var(--color-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);background:#fff}
+body:has(#queue) .work{grid-template-columns:minmax(280px,.7fr) minmax(420px,1.3fr)}
+
+/* Municipal shells */
+.municipalShellHead{min-height:60px!important;padding:8px clamp(14px,2.5vw,26px)!important}
+.municipalShellHead strong{font-size:16px!important}.municipalShellHead span{font-size:10px!important}
+.municipalShellHead a{background:var(--color-primary);color:#fff!important;border-color:var(--color-primary)!important;border-radius:var(--radius-sm)!important}
+
+/* Responsive: preserve hierarchy rather than simply stacking */
+@media(max-width:1100px){
+  .mapToolGroup{border-right:0}.mapTools{max-width:calc(100% - 100px)}
+  .moduleContext{display:none}
+  .consultPage .serviceGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:850px){
+  .primaryNav,.moduleNav{scrollbar-width:none}
+  .moduleHeader{gap:7px!important}
+  .moduleHeader .back{display:none}
+  .mapTools{left:9px!important;right:9px!important;max-width:none;overflow-x:auto;flex-wrap:nowrap}
+  .mapToolGroup{flex:0 0 auto}
+  .moduleMap::after{left:10px;bottom:9px}
+  .projectPage .steps article::after{display:none}
+  .stepnav{top:0!important;overflow:auto;flex-wrap:nowrap;white-space:nowrap}
+}
+@media(max-width:600px){
+  .soilHeaderBtn{font-size:9px!important;padding:8px 9px!important}
+  .mapTools{border-radius:13px!important}
+  .mapTools button{font-size:9px!important}
+  .consultPage .serviceGrid{grid-template-columns:1fr}
+  body:has(#queue) .stats{grid-template-columns:1fr}
+  body:has(#licenseForm) main{display:block!important}
+  body:has(#licenseForm) .preview{position:static!important;max-height:none!important}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;transition-duration:.001ms!important}}

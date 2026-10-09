@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TerraOS 11.0 · Nuestro territorio</title>
+<link rel="icon" href="assets/terraos-amonita-v2.webp">
+
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="module.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="terraos-97.css">
+<link rel="stylesheet" href="terraos-98.css">
+<link rel="stylesheet" href="terraos-100.css">
+
+<style>
+:root{
+  --ink:#123a32;
+  --green:#1f6656;
+  --green2:#2f7d68;
+  --cream:#f6f1e7;
+  --paper:#fbfaf6;
+  --sand:#dfc9a3;
+  --copper:#b47c53;
+  --line:rgba(18,58,50,.14);
+  --muted:#6e7f79;
+  --shadow:0 24px 70px rgba(21,54,47,.16);
+  --soft:0 10px 30px rgba(21,54,47,.09);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--cream);color:#183a32;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}
+
+/* HEADER */
+.moduleHeader{
+  position:sticky;
+  top:0;
+  z-index:1400;
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:10px 18px;
+  background:rgba(250,248,242,.94);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);white-space:nowrap
+}
+.brand img{width:38px;height:38px}
+.brand>span{font-family:Georgia,serif;font-size:1.5rem;font-weight:700;letter-spacing:-.03em}
+.brand>span>span{color:var(--copper)}
+.brand small{display:block;font-family:Inter,ui-sans-serif,sans-serif;font-size:.5rem;letter-spacing:.18em;color:#75857f;margin-top:2px}
+.brand b{font-size:.7rem;padding:6px 8px;border-radius:8px;background:#edf2ed;color:var(--green);border:1px solid var(--line)}
+.moduleNav{margin-left:auto;display:flex;gap:5px;align-items:center}
+.moduleNav a{
+  text-decoration:none;color:#4b7268;font-size:.68rem;font-weight:900;letter-spacing:.07em;
+  padding:9px 10px;border-radius:9px
+}
+.moduleNav a.active,.moduleNav a:hover{background:#edf2ed;color:var(--ink)}
+.moduleMunicipality{position:relative}
+.moduleMunicipality summary{
+  list-style:none;cursor:pointer;padding:9px 12px;border-radius:10px;background:#edf2ed;color:var(--green);font-size:.76rem;font-weight:900;border:1px solid var(--line)
+}
+.moduleMunicipality summary::-webkit-details-marker{display:none}
+.municipalityPanel{
+  position:absolute;right:0;top:45px;width:250px;background:#fff;padding:14px;border-radius:15px;box-shadow:var(--shadow);border:1px solid var(--line)
+}
+.municipalityPanel select{width:100%;margin:7px 0;padding:9px;border:1px solid var(--line);border-radius:9px}
+.soilHeaderBtn,.back{
+  text-decoration:none;border-radius:10px;padding:10px 13px;font-weight:900;font-size:.75rem
+}
+.soilHeaderBtn{background:var(--ink);color:white}
+.back{background:#eef1eb;color:var(--ink)}
+
+/* HERO */
+.territoryHero{
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr);
+  min-height:calc(100vh - 72px);
+  background:
+    radial-gradient(circle at 80% 18%,rgba(223,201,163,.4),transparent 30%),
+    linear-gradient(135deg,#edf3ee,#f7f1e5);
+}
+.mapStage{position:relative;min-height:680px;overflow:hidden;border-right:1px solid var(--line)}
+#scienceMap{position:absolute;inset:0}
+.mapCurtain{
+  position:absolute;inset:0;pointer-events:none;z-index:300;
+  background:linear-gradient(90deg,rgba(15,48,41,.04),transparent 28%,transparent 75%,rgba(246,241,231,.10))
+}
+.mapTitle{
+  position:absolute;left:20px;top:20px;z-index:520;
+  width:min(340px,calc(100% - 40px));
+  padding:13px 15px;border-radius:17px;background:rgba(255,255,255,.91);
+  backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.8);box-shadow:var(--soft)
+}
+.mapTitle small{display:block;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:#78908a;margin-bottom:4px}
+.mapTitle strong{font-family:Georgia,serif;font-size:1.08rem;color:var(--ink)}
+.mapStatus{
+  position:absolute;left:20px;bottom:22px;z-index:520;
+  display:flex;align-items:center;gap:8px;padding:10px 13px;border-radius:999px;
+  background:rgba(18,58,50,.92);color:white;font-size:.72rem;box-shadow:var(--soft)
+}
+.mapStatus i{width:8px;height:8px;border-radius:50%;background:#d7b36e}
+
+/* Progressive scientific-tourism dock */
+.scienceDock{
+  position:absolute;right:16px;top:20px;z-index:540;width:205px;display:flex;flex-direction:column;gap:8px
+}
+.dockStep{
+  background:rgba(250,248,242,.92);backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.76);border-radius:14px;overflow:hidden;box-shadow:var(--soft)
+}
+.dockStep:nth-child(2){margin-left:12px}
+.dockStep:nth-child(3){margin-left:24px}
+.dockStep:nth-child(4){margin-left:36px}
+.dockStep summary{
+  list-style:none;cursor:pointer;padding:10px 12px;color:var(--ink);
+  display:flex;align-items:center;justify-content:space-between;font-size:.72rem;font-weight:900
+}
+.dockStep summary::-webkit-details-marker{display:none}
+.dockStep summary:after{content:"+";color:#7b8b85}
+.dockStep[open] summary:after{content:"–"}
+.dockBody{padding:0 8px 8px;display:grid;gap:6px}
+.dockBody button{
+  border:0;border-radius:9px;padding:8px 9px;background:#fff;color:#4e6e65;text-align:left;
+  font-size:.69rem;font-weight:800;cursor:pointer
+}
+.dockBody button:hover,.dockBody button.active{background:#e9f1ec;color:var(--ink)}
+.routeLegend{
+  position:absolute;right:16px;bottom:20px;z-index:520;
+  width:230px;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-radius:14px;
+  padding:11px 12px;border:1px solid rgba(255,255,255,.8);box-shadow:var(--soft);font-size:.67rem;color:#60736d
+}
+.routeLegend b{display:block;color:var(--ink);margin-bottom:5px}
+.routeLegend span{display:flex;align-items:center;gap:7px;margin:5px 0}
+.routeLegend i{width:20px;height:3px;border-radius:99px;background:var(--green)}
+.routeLegend .geo i{background:var(--copper)}
+.routeLegend .water i{background:#6e9bb3}
+
+/* SIDE PANEL */
+.sciencePanel{
+  padding:clamp(30px,4.5vw,70px);
+  display:flex;align-items:center;
+}
+.panelInner{max-width:560px}
+.eyebrow{margin:0 0 12px;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:900;color:var(--green2)}
+.sciencePanel h1{
+  margin:0;font-family:Georgia,serif;font-size:clamp(3.1rem,5.7vw,6.4rem);
+  line-height:.96;letter-spacing:-.045em;font-weight:500;color:var(--ink)
+}
+.sciencePanel h1 em{font-style:normal;color:var(--copper)}
+.sciencePanel .lead{font-size:1.03rem;line-height:1.68;color:#60736d;margin:25px 0}
+.panelRule{
+  display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;border-top:1px solid var(--line);padding-top:17px
+}
+.panelRule b{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.panelRule span{font-family:Georgia,serif;color:#5f716b}
+.panelActions{display:flex;gap:9px;flex-wrap:wrap;margin-top:28px}
+.panelActions button,.panelActions a{
+  border:0;border-radius:12px;padding:12px 15px;font-weight:900;text-decoration:none;cursor:pointer
+}
+.primaryAction{background:var(--ink);color:#fff}
+.secondaryAction{background:#edf2ed;color:var(--ink)}
+
+/* CONTENT */
+.moduleMain{background:var(--paper)}
+.sectionWrap{padding:80px max(22px,6vw)}
+.sectionHead{display:grid;grid-template-columns:1fr minmax(280px,.62fr);gap:34px;align-items:end;margin-bottom:34px}
+.sectionHead h2{
+  margin:0;font-family:Georgia,serif;font-size:clamp(2.4rem,4.8vw,4.7rem);line-height:1;font-weight:500;color:var(--ink)
+}
+.sectionHead p{margin:0;color:#6a7a75;line-height:1.65}
+
+/* records */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.filters button{
+  border:1px solid var(--line);background:#eef2e9;color:var(--ink);padding:9px 12px;border-radius:999px;cursor:pointer;font-weight:800;font-size:.73rem
+}
+.filters button.active{background:var(--ink);color:white}
+.recordGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.recordCard{
+  background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 9px 24px rgba(20,55,47,.06)
+}
+.recordVisual{height:160px;background:linear-gradient(135deg,#dce9e3,#dbc49d);position:relative}
+.recordVisual:after{
+  content:"";position:absolute;inset:0;background:
+  radial-gradient(circle at 30% 35%,rgba(255,255,255,.55),transparent 22%),
+  linear-gradient(135deg,transparent,rgba(18,58,50,.13))
+}
+.recordBody{padding:18px}
+.recordBody span{font-size:.62rem;text-transform:uppercase;letter-spacing:.13em;color:var(--green2);font-weight:900}
+.recordBody h3{font-family:Georgia,serif;font-size:1.35rem;font-weight:500;margin:6px 0;color:var(--ink)}
+.recordBody p{color:#6b7c76;line-height:1.5;font-size:.86rem}
+.emptyTerritory{padding:28px;border:1px dashed #bdcabc;border-radius:14px;color:var(--muted);background:#fff}
+
+/* contribution / admin */
+.contributionSection{background:#edf2ed}
+.contributionGrid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:20px}
+.contributionStory,.contributionForm{
+  border-radius:24px;padding:28px;border:1px solid var(--line);background:#fff
+}
+.contributionStory{background:linear-gradient(145deg,#143f36,#286653);color:#fff}
+.contributionStory h3{font-family:Georgia,serif;font-size:2.2rem;font-weight:500;margin:5px 0 13px}
+.contributionStory p{color:#d5e4df;line-height:1.65}
+.workflow{margin-top:22px;display:grid;gap:10px}
+.workflow div{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}
+.workflow b{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#d9c19b;color:var(--ink)}
+.workflow span{font-size:.83rem;line-height:1.45}
+.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.contributionForm label{font-size:.7rem;font-weight:900;color:#5c736b}
+.contributionForm input,.contributionForm select,.contributionForm textarea{
+  width:100%;margin-top:6px;border:1px solid var(--line);background:#fbfaf6;border-radius:10px;padding:11px;color:#2d4d44
+}
+.contributionForm textarea{min-height:110px;resize:vertical}
+.full{grid-column:1/-1}
+.photoPreview{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.photoPreview img{width:72px;height:72px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+.formActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.formActions button{border:0;border-radius:10px;padding:11px 14px;font-weight:900;cursor:pointer}
+#saveContribution{background:var(--ink);color:#fff}
+#sendContribution{background:#d9c19b;color:var(--ink)}
+.submissionState{margin-top:12px;color:#687a74;font-size:.78rem;line-height:1.5}
+
+/* AR */
+.arSection{background:#173c36;color:white}
+.arGrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:20px;align-items:stretch}
+.arPanel,.arStory{
+  border-radius:24px;padding:30px;border:1px solid rgba(255,255,255,.12)
+}
+.arPanel{background:rgba(255,255,255,.05)}
+.arStory{background:linear-gradient(135deg,rgba(215,179,110,.17),rgba(255,255,255,.04))}
+.arPanel h2,.arStory h2{font-family:Georgia,serif;font-size:2.5rem;font-weight:500;margin:7px 0 12px}
+.arPanel p,.arStory p{color:#d5e3df;line-height:1.6}
+.arPanel button{
+  padding:11px 15px;border:0;border-radius:9px;background:#d7b36e;color:#173c36;font-weight:900;cursor:pointer
+}
+.arState{margin-top:14px;font-size:13px;line-height:1.6}
+.arDemo{display:none;margin-top:14px;padding:18px;border:1px solid #ffffff55;border-radius:14px}
+.arDemo.active{display:block}
+.reticle{
+  width:92px;height:92px;border:2px solid #d7b36e;border-radius:50%;
+  margin:12px auto;display:grid;place-items:center;box-shadow:0 0 0 18px rgba(215,179,110,.08)
+}
+.reticle:after{content:'+';font-size:32px;color:#d7b36e}
+.arFeatures{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.arFeature{padding:14px;border-radius:14px;background:rgba(255,255,255,.06);font-size:.8rem;color:#dce8e4}
+.arFeature b{display:block;color:#f2d7a4;margin-bottom:4px}
+
+/* MyMaps and governance */
+.supportGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.territoryCard{
+  background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px
+}
+.territoryCard h2{font-family:Georgia,serif;font-weight:500;color:var(--ink);font-size:2rem}
+.myMapFrame{width:100%;height:360px;border:0;border-radius:14px;background:#eef2e9}
+.sensitive{background:#fff3d9;border-left:4px solid #b07a22;padding:13px;border-radius:8px;color:#6e5b39}
+.primaryLink{display:inline-block;margin-top:8px;background:var(--ink);color:white;text-decoration:none;padding:10px 12px;border-radius:9px;font-weight:900}
+
+/* leaflet custom poi */
+.poi-dot{
+  width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  border:3px solid white;background:var(--green);color:white;font-size:.75rem;font-weight:900;
+  box-shadow:0 8px 20px rgba(20,55,47,.28)
+}
+.poi-dot.geo{background:var(--copper)}
+.poi-dot.water{background:#6e9bb3}
+.leaflet-popup-content-wrapper{border-radius:16px!important}
+.poiPopup b{font-family:Georgia,serif;font-size:1.05rem;color:var(--ink)}
+.poiPopup small{display:block;color:#73847e;margin:3px 0 7px}
+
+@media(max-width:1050px){
+  .moduleNav{display:none}
+  .territoryHero{grid-template-columns:1fr}
+  .mapStage{min-height:62vh;border-right:0;border-bottom:1px solid var(--line)}
+  .sciencePanel{min-height:auto}
+  .recordGrid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px){
+  .sectionHead,.contributionGrid,.arGrid,.supportGrid{grid-template-columns:1fr}
+  .recordGrid{grid-template-columns:1fr}
+  .scienceDock{right:10px;width:175px}
+  .dockStep:nth-child(n){margin-left:0}
+  .formGrid{grid-template-columns:1fr}
+  .full{grid-column:auto}
+  .moduleHeader{flex-wrap:wrap}
+}
+</style>
+
+<style id="terraos-market-nav-107">
+.moduleNav .marketNavLink{
+  color:#b47c53!important;
+  border:1px solid rgba(180,124,83,.22);
+  background:rgba(246,241,231,.64);
+}
+.moduleNav .marketNavLink:hover{
+  background:#f1e5d5!important;
+  color:#123a32!important;
+}
+</style>
+
+</head>
+
+<body class="territoryPage">
+
+<header class="moduleHeader">
+  <a class="brand" href="index.html">
+    <img src="assets/terraos-amonita-v2.webp" alt="Amonita">
+    <span>Terra<span>OS</span><small>INTELIGENCIA TERRITORIAL</small></span>
+    <b>11.0</b>
+  </a>
+
+  <nav class="moduleNav">
+    <a href="consultoria.html">NUESTROS SERVICIOS</a>
+    <a class="marketNavLink" href="index.html?soil=1&market=1#marketProjectHeading">COMERCIO PREDIAL</a>
+    <a href="arca.html">TIENDA ARCA</a>
+    <a href="proyecto.html">GESTIONE SU PROYECTO</a>
+    <a class="active" href="territorio.html">NUESTRO TERRITORIO</a>
+  </nav>
+
+  <details class="municipalityMenu moduleMunicipality">
+    <summary>Municipios</summary>
+    <div class="municipalityPanel">
+      <label for="municipalitySelect">Paquete territorial</label>
+      <select id="municipalitySelect"></select>
+      <div id="municipalityStatus" class="municipalityStatus"></div>
+    </div>
+  </details>
+
+  <a class="soilHeaderBtn" href="index.html?soil=1">Gestión del suelo</a>
+  <a href="index.html" class="back">← Visor</a>
+</header>
+
+<section class="territoryHero">
+  <div class="mapStage">
+    <div id="scienceMap" aria-label="Mapa principal de turismo científico"></div>
+    <div class="mapCurtain"></div>
+
+    <div class="mapTitle">
+      <small>Villa de Leyva · laboratorio territorial</small>
+      <strong>Rutas para observar, comprender y aportar conocimiento.</strong>
+    </div>
+
+    <div class="scienceDock" aria-label="Escalera de exploración científica">
+      <details class="dockStep" open>
+        <summary>1 · Explorar</summary>
+        <div class="dockBody">
+          <button id="showAllRoutes" class="active">Todas las rutas</button>
+          <button id="showGeoRoute">Ruta geológica</button>
+          <button id="showWaterRoute">Ruta del agua</button>
+          <button id="showCultureRoute">Ruta cultural</button>
+        </div>
+      </details>
+
+      <details class="dockStep">
+        <summary>2 · Interpretar</summary>
+        <div class="dockBody">
+          <button id="togglePOI">Puntos científicos</button>
+          <button id="toggleStories">Relatos del lugar</button>
+          <button id="startARMap">Vista AR</button>
+        </div>
+      </details>
+
+      <details class="dockStep">
+        <summary>3 · Aportar</summary>
+        <div class="dockBody">
+          <button id="pickPoint">+ Proponer punto</button>
+          <button id="openContribution">Enviar fotografía</button>
+          <button id="openContributionText">Describir hallazgo</button>
+        </div>
+      </details>
+
+      <details class="dockStep">
+        <summary>4 · Decidir</summary>
+        <div class="dockBody">
+          <button id="fitScientificRoute">◎ Centrar ruta</button>
+          <button id="openRecords">Registros revisados</button>
+        </div>
+      </details>
+    </div>
+
+    <div class="mapStatus"><i></i><span id="mapInteractionState">Explore una ruta o seleccione un punto de interés.</span></div>
+
+    <div class="routeLegend">
+      <b>Rutas de interpretación</b>
+      <span><i></i> biodiversidad / cultura</span>
+      <span class="geo"><i></i> geología / paisaje</span>
+      <span class="water"><i></i> agua / ecosistemas</span>
+    </div>
+  </div>
+
+  <aside class="sciencePanel">
+    <div class="panelInner">
+      <p class="eyebrow">TURISMO CIENTÍFICO · TERRITORIO VIVO</p>
+      <h1>Explorar para <em>comprender.</em></h1>
+      <p class="lead">
+        TerraOS convierte el territorio en una experiencia de observación:
+        rutas, geología, agua, biodiversidad, patrimonio y relatos locales se conectan
+        con puntos de interés y futuras capas de realidad aumentada.
+      </p>
+      <div class="panelRule">
+        <b>Principio</b>
+        <span>Territorio → ruta → observación → evidencia → conocimiento compartido.</span>
+      </div>
+      <div class="panelActions">
+        <button class="primaryAction" id="beginScientificTrip">Comenzar exploración</button>
+        <button class="secondaryAction" id="contributeNow">Aportar un hallazgo</button>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<main class="moduleMain">
+
+  <section class="sectionWrap" id="recordsSection">
+    <div class="sectionHead">
+      <div>
+        <p class="eyebrow">OBSERVATORIO TERRITORIAL</p>
+        <h2>Lugares que cuentan algo del territorio.</h2>
+      </div>
+      <p>
+        Los registros se organizan para interpretación científica y turismo responsable.
+        Los aportes ciudadanos pasan por recepción, revisión, aprobación y publicación.
+      </p>
+    </div>
+
+    <div class="filters">
+      <button data-filter="all" class="active">Todas</button>
+      <button data-filter="agua">Agua</button>
+      <button data-filter="ambiental">Ambiental</button>
+      <button data-filter="geologico">Geológico</button>
+      <button data-filter="cultural">Cultural</button>
+      <button data-filter="senderos">Senderos</button>
+      <button data-filter="turismo">Turismo</button>
+    </div>
+
+    <div id="records" class="recordGrid"></div>
+  </section>
+
+  <section class="sectionWrap contributionSection" id="contributionSection">
+    <div class="sectionHead">
+      <div>
+        <p class="eyebrow">CIENCIA CIUDADANA</p>
+        <h2>El turista también puede observar y documentar.</h2>
+      </div>
+      <p>
+        El aporte no se publica automáticamente. TerraOS lo prepara como registro pendiente
+        para que el administrador revise ubicación, contenido, fotografías y sensibilidad del lugar.
+      </p>
+    </div>
+
+    <div class="contributionGrid">
+      <div class="contributionStory">
+        <p class="eyebrow" style="color:#dbc59f">DEL CAMPO AL SISTEMA</p>
+        <h3>Una observación puede convertirse en conocimiento territorial.</h3>
+        <p>El flujo protege la calidad de los datos y evita que un aporte ciudadano se convierta automáticamente en información oficial.</p>
+        <div class="workflow">
+          <div><b>1</b><span>El turista identifica un punto o hallazgo en el mapa.</span></div>
+          <div><b>2</b><span>Adjunta fotografía, descripción, categoría y contexto.</span></div>
+          <div><b>3</b><span>TerraOS guarda el aporte como <strong>pendiente de revisión</strong>.</span></div>
+          <div><b>4</b><span>El administrador valida, corrige, reserva o publica.</span></div>
+        </div>
+      </div>
+
+      <form class="contributionForm" id="contributionForm">
+        <div class="formGrid">
+          <label>Nombre del lugar
+            <input id="contributionName" required placeholder="Ej. Afloramiento junto al sendero">
+          </label>
+
+          <label>Categoría
+            <select id="contributionCategory">
+              <option value="geologico">Geología</option>
+              <option value="agua">Agua</option>
+              <option value="ambiental">Biodiversidad / ambiental</option>
+              <option value="cultural">Patrimonio cultural</option>
+              <option value="senderos">Sendero</option>
+              <option value="turismo">Servicio / experiencia turística</option>
+            </select>
+          </label>
+
+          <label>Latitud
+            <input id="contributionLat" readonly placeholder="Seleccione un punto en el mapa">
+          </label>
+
+          <label>Longitud
+            <input id="contributionLng" readonly placeholder="Seleccione un punto en el mapa">
+          </label>
+
+          <label class="full">Descripción de la observación
+            <textarea id="contributionDescription" required placeholder="¿Qué observó? ¿Por qué puede ser interesante? ¿Hay alguna condición especial de acceso o conservación?"></textarea>
+          </label>
+
+          <label class="full">Fotografías
+            <input id="contributionPhotos" type="file" accept="image/*" multiple>
+          </label>
+        </div>
+
+        <div id="photoPreview" class="photoPreview"></div>
+
+        <div class="formActions">
+          <button type="button" id="saveContribution">Guardar aporte pendiente</button>
+          <button type="button" id="sendContribution">Enviar resumen al administrador</button>
+        </div>
+        <div id="submissionState" class="submissionState">Seleccione un punto en el mapa para comenzar.</div>
+      </form>
+    </div>
+  </section>
+
+  <section class="sectionWrap arSection">
+    <div class="arGrid">
+      <div class="arPanel">
+        <p class="eyebrow" style="color:#d7b36e">EXPERIENCIA EN DISPOSITIVO</p>
+        <h2>Explorar en realidad aumentada</h2>
+        <p>
+          La ruta puede superponer capas interpretativas sobre el lugar: geología, paleoambientes,
+          hidrología, especies, historia y cambios del paisaje.
+        </p>
+        <button id="startAR">Comprobar experiencia AR</button>
+        <div id="arState" class="arState">No se solicitarán cámara o ubicación hasta activar esta experiencia.</div>
+        <div id="arDemo" class="arDemo">
+          <div class="reticle"></div>
+          <strong>Demostración de interpretación espacial</strong>
+          <p>Esta interfaz simula la capa interpretativa. Una versión WebXR futura podrá georreferenciar contenidos sobre el entorno observado.</p>
+        </div>
+      </div>
+
+      <div class="arStory">
+        <p class="eyebrow" style="color:#d7b36e">CAPAS DE INTERPRETACIÓN</p>
+        <h2>La AR debe explicar, no distraer.</h2>
+        <p>
+          La propuesta prioriza contenidos verificables, lenguaje claro y sensibilidad ambiental.
+          La tecnología aparece cuando ayuda a comprender el lugar.
+        </p>
+        <div class="arFeatures">
+          <div class="arFeature"><b>Geología</b>Estratos, fósiles, procesos y paleoambientes.</div>
+          <div class="arFeature"><b>Agua</b>Nacimientos, drenajes, rondas y dinámica hídrica.</div>
+          <div class="arFeature"><b>Biodiversidad</b>Hábitats, especies y restricciones de divulgación.</div>
+          <div class="arFeature"><b>Cultura</b>Memoria, arquitectura, relatos y transformación del paisaje.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sectionWrap">
+    <div class="supportGrid">
+      <div class="territoryCard">
+        <p class="eyebrow">GOOGLE MY MAPS</p>
+        <h2>Mapa colaborativo auxiliar</h2>
+        <p id="myMapState">No hay un mapa My Maps real configurado todavía.</p>
+        <div id="myMapBox" class="emptyTerritory">
+          Cuando exista un mapa público, configure <code>myMaps.embedUrl</code> en <code>config.js</code>.
+          TerraOS podrá mostrarlo aquí dentro de la página. Sus atributos no se leen automáticamente por el motor SIG.
+        </div>
+        <p class="hint">Flujo previsto: captura colaborativa → exportación KML/KMZ o CSV → validación administrativa → incorporación a las bases propias.</p>
+      </div>
+
+      <div class="territoryCard">
+        <p class="eyebrow">GOBERNANZA DEL DATO</p>
+        <h2>Publicar también es una decisión territorial.</h2>
+        <p>
+          Cada registro debería conservar identificador, nombre, categoría, geometría, fotografías,
+          fuente, fecha, responsable, estado de revisión, restricciones, interpretación científica y contacto autorizado.
+        </p>
+        <p class="sensitive"><b>Protección:</b> ubicaciones sensibles de especies, nacimientos vulnerables o lugares restringidos pueden reservarse, generalizarse o no publicarse.</p>
+        <a class="primaryLink" href="index.html">Revisar en el visor territorial ↗</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="vendor/leaflet.js"></script>
+<script src="config.js"></script>
+
+<script>
+(function(){
+  /* ---------------- MAPA PRINCIPAL ---------------- */
+  const map = L.map('scienceMap',{zoomControl:true,scrollWheelZoom:true}).setView([5.6338,-73.5249],14);
+
+  const esri = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    {maxZoom:19,attribution:'Tiles © Esri'}
+  ).addTo(map);
+
+  const topo = L.tileLayer(
+    'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+    {maxZoom:17,attribution:'© OpenTopoMap contributors'}
+  );
+
+  L.control.layers({'Esri World Imagery':esri,'OpenTopoMap':topo},null,{position:'bottomleft',collapsed:true}).addTo(map);
+
+  const poiData = [
+    {id:'G1',cat:'geologico',name:'Mirador geológico',desc:'Punto demostrativo para interpretar formas del relieve y materiales.',lat:5.6460,lng:-73.5301,kind:'geo'},
+    {id:'A1',cat:'agua',name:'Lectura del agua',desc:'Punto demostrativo para observar drenajes y relaciones paisaje–agua.',lat:5.6389,lng:-73.5177,kind:'water'},
+    {id:'C1',cat:'cultural',name:'Paisaje cultural',desc:'Punto demostrativo para interpretar ocupación, memoria y estructura urbana.',lat:5.6332,lng:-73.5230,kind:''},
+    {id:'B1',cat:'ambiental',name:'Borde ecológico',desc:'Punto demostrativo para observar coberturas, conectividad y presión antrópica.',lat:5.6260,lng:-73.5350,kind:''},
+    {id:'T1',cat:'senderos',name:'Inicio de recorrido',desc:'Punto demostrativo de partida para una ruta interpretativa.',lat:5.6292,lng:-73.5190,kind:''},
+    {id:'P1',cat:'turismo',name:'Estación TerraOS',desc:'Punto demostrativo para orientar al visitante y recibir aportes.',lat:5.6348,lng:-73.5262,kind:''}
+  ];
+
+  const routeLayers = {
+    geo: L.polyline([[5.6292,-73.5190],[5.6332,-73.5230],[5.6460,-73.5301]],{color:'#b47c53',weight:5,opacity:.9,dashArray:'10 7'}),
+    water: L.polyline([[5.6260,-73.5350],[5.6338,-73.5260],[5.6389,-73.5177]],{color:'#6e9bb3',weight:5,opacity:.9,dashArray:'10 7'}),
+    culture: L.polyline([[5.6292,-73.5190],[5.6332,-73.5230],[5.6348,-73.5262]],{color:'#1f6656',weight:5,opacity:.9,dashArray:'10 7'})
+  };
+
+  Object.values(routeLayers).forEach(l=>l.addTo(map));
+
+  const poiGroup = L.layerGroup().addTo(map);
+  function poiIcon(kind){
+    return L.divIcon({
+      className:'',
+      html:'<div class="poi-dot '+(kind||'')+'">●</div>',
+      iconSize:[34,34],
+      iconAnchor:[17,17]
+    });
+  }
+
+  poiData.forEach(p=>{
+    const m=L.marker([p.lat,p.lng],{icon:poiIcon(p.kind)}).addTo(poiGroup);
+    m.bindPopup('<div class="poiPopup"><b>'+p.name+'</b><small>'+p.cat+'</small><div>'+p.desc+'</div></div>');
+  });
+
+  const allBounds=L.latLngBounds(poiData.map(p=>[p.lat,p.lng]));
+  const state=document.getElementById('mapInteractionState');
+
+  function setRoutes(which){
+    Object.values(routeLayers).forEach(l=>map.removeLayer(l));
+    if(which==='all'){Object.values(routeLayers).forEach(l=>l.addTo(map));state.textContent='Mostrando todas las rutas científicas demostrativas.'}
+    else {routeLayers[which].addTo(map);state.textContent='Ruta activa: '+which+'.'}
+    document.querySelectorAll('.dockBody button').forEach(b=>b.classList.remove('active'));
+  }
+
+  document.getElementById('showAllRoutes').onclick=()=>{setRoutes('all');document.getElementById('showAllRoutes').classList.add('active')};
+  document.getElementById('showGeoRoute').onclick=()=>{setRoutes('geo');document.getElementById('showGeoRoute').classList.add('active')};
+  document.getElementById('showWaterRoute').onclick=()=>{setRoutes('water');document.getElementById('showWaterRoute').classList.add('active')};
+  document.getElementById('showCultureRoute').onclick=()=>{setRoutes('culture');document.getElementById('showCultureRoute').classList.add('active')};
+  document.getElementById('fitScientificRoute').onclick=()=>map.fitBounds(allBounds.pad(.18));
+
+  document.getElementById('togglePOI').onclick=()=>{
+    if(map.hasLayer(poiGroup)){map.removeLayer(poiGroup);state.textContent='Puntos científicos ocultos.'}
+    else{poiGroup.addTo(map);state.textContent='Puntos científicos visibles.'}
+  };
+
+  document.getElementById('toggleStories').onclick=()=>{
+    state.textContent='Los relatos del lugar están preparados como futura capa narrativa vinculada a cada punto.';
+  };
+
+  /* Escalera: solo una abierta */
+  const steps=[...document.querySelectorAll('.dockStep')];
+  steps.forEach(step=>step.addEventListener('toggle',()=>{
+    if(step.open) steps.forEach(other=>{if(other!==step)other.open=false});
+  }));
+
+  /* ---------------- CONTRIBUCIONES ---------------- */
+  let pickMode=false;
+  let draftMarker=null;
+  const latInput=document.getElementById('contributionLat');
+  const lngInput=document.getElementById('contributionLng');
+  const formSection=document.getElementById('contributionSection');
+  const submissionState=document.getElementById('submissionState');
+
+  function activatePick(){
+    pickMode=true;
+    state.textContent='Haga clic sobre el mapa para ubicar su hallazgo.';
+    map.getContainer().style.cursor='crosshair';
+  }
+
+  document.getElementById('pickPoint').onclick=activatePick;
+  document.getElementById('contributeNow').onclick=()=>{formSection.scrollIntoView({behavior:'smooth'});activatePick()};
+  document.getElementById('openContribution').onclick=()=>formSection.scrollIntoView({behavior:'smooth'});
+  document.getElementById('openContributionText').onclick=()=>formSection.scrollIntoView({behavior:'smooth'});
+
+  map.on('click',e=>{
+    if(!pickMode)return;
+    pickMode=false;
+    map.getContainer().style.cursor='';
+    latInput.value=e.latlng.lat.toFixed(6);
+    lngInput.value=e.latlng.lng.toFixed(6);
+    if(draftMarker) map.removeLayer(draftMarker);
+    draftMarker=L.marker(e.latlng,{icon:poiIcon('')}).addTo(map).bindPopup('Aporte pendiente · ubicación propuesta').openPopup();
+    submissionState.textContent='Ubicación capturada. Complete la descripción y, si desea, adjunte fotografías.';
+    formSection.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+
+  const photos=document.getElementById('contributionPhotos');
+  const preview=document.getElementById('photoPreview');
+  photos.addEventListener('change',()=>{
+    preview.innerHTML='';
+    [...photos.files].slice(0,6).forEach(file=>{
+      const r=new FileReader();
+      r.onload=()=>{const img=document.createElement('img');img.src=r.result;img.alt='Vista previa';preview.appendChild(img)};
+      r.readAsDataURL(file);
+    });
+  });
+
+  function currentContribution(){
+    return {
+      id:'AP-'+Date.now(),
+      name:document.getElementById('contributionName').value.trim(),
+      category:document.getElementById('contributionCategory').value,
+      lat:latInput.value,
+      lng:lngInput.value,
+      description:document.getElementById('contributionDescription').value.trim(),
+      photoNames:[...photos.files].map(f=>f.name),
+      status:'pendiente_revision',
+      createdAt:new Date().toISOString()
+    };
+  }
+
+  document.getElementById('saveContribution').onclick=()=>{
+    const c=currentContribution();
+    if(!c.name||!c.description||!c.lat||!c.lng){
+      submissionState.textContent='Faltan nombre, descripción o ubicación del hallazgo.';
+      return;
+    }
+    const stored=JSON.parse(localStorage.getItem('terraosScientificContributions')||'[]');
+    stored.push(c);
+    localStorage.setItem('terraosScientificContributions',JSON.stringify(stored));
+    submissionState.textContent='Aporte guardado localmente como PENDIENTE DE REVISIÓN. En producción deberá enviarse al backend del administrador.';
+  };
+
+  document.getElementById('sendContribution').onclick=()=>{
+    const c=currentContribution();
+    if(!c.name||!c.description||!c.lat||!c.lng){
+      submissionState.textContent='Complete nombre, descripción y ubicación antes de enviar el resumen.';
+      return;
+    }
+    const phone=(window.TERRA_CONFIG?.whatsapp?.phone)||'573144429234';
+    const msg=[
+      'Hola. Deseo aportar un punto de interés a TerraOS.',
+      'Nombre: '+c.name,
+      'Categoría: '+c.category,
+      'Ubicación: '+c.lat+', '+c.lng,
+      'Descripción: '+c.description,
+      'Fotografías seleccionadas: '+(c.photoNames.length?c.photoNames.join(', '):'ninguna'),
+      'Estado solicitado: pendiente de revisión.'
+    ].join('\n');
+    window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank','noopener');
+    submissionState.textContent='Se abrió WhatsApp con el resumen. Las fotografías no se adjuntan automáticamente desde el navegador; deberán enviarse en la conversación.';
+  };
+
+  /* ---------------- REGISTROS ---------------- */
+  const records=document.getElementById('records');
+  const demoRecords=[
+    {cat:'geologico',name:'Mirador geológico',desc:'Interpretación demostrativa de relieve, materiales y evolución del paisaje.'},
+    {cat:'agua',name:'Lectura del agua',desc:'Observación demostrativa de drenajes y relación entre agua y ocupación.'},
+    {cat:'cultural',name:'Paisaje cultural',desc:'Relación entre memoria, forma urbana y transformación del territorio.'},
+    {cat:'ambiental',name:'Borde ecológico',desc:'Lectura de coberturas, conectividad y presión sobre ecosistemas.'},
+    {cat:'senderos',name:'Ruta interpretativa',desc:'Recorrido demostrativo para integrar paisaje, ciencia y orientación.'},
+    {cat:'turismo',name:'Estación TerraOS',desc:'Nodo demostrativo para orientación, aporte ciudadano y servicios.'}
+  ];
+
+  function renderRecords(filter='all'){
+    const data=demoRecords.filter(r=>filter==='all'||r.cat===filter);
+    records.innerHTML=data.map(r=>`
+      <article class="recordCard" data-cat="${r.cat}">
+        <div class="recordVisual"></div>
+        <div class="recordBody">
+          <span>${r.cat}</span>
+          <h3>${r.name}</h3>
+          <p>${r.desc}</p>
+        </div>
+      </article>`).join('');
+  }
+  renderRecords();
+
+  document.querySelectorAll('[data-filter]').forEach(b=>{
+    b.onclick=()=>{
+      document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      renderRecords(b.dataset.filter);
+    };
+  });
+
+  document.getElementById('openRecords').onclick=()=>document.getElementById('recordsSection').scrollIntoView({behavior:'smooth'});
+
+  /* ---------------- AR ---------------- */
+  const arState=document.getElementById('arState');
+  const arDemo=document.getElementById('arDemo');
+
+  async function checkAR(){
+    arState.textContent='Comprobando compatibilidad del dispositivo…';
+    arDemo.classList.remove('active');
+    try{
+      if(!navigator.xr){
+        arState.textContent='WebXR no está disponible en este navegador. Se ofrece una demostración interpretativa en pantalla.';
+        arDemo.classList.add('active');
+        return;
+      }
+      const supported=await navigator.xr.isSessionSupported('immersive-ar');
+      if(!supported){
+        arState.textContent='Este dispositivo/navegador no admite AR inmersiva. La experiencia alternativa permanece disponible.';
+        arDemo.classList.add('active');
+        return;
+      }
+      arState.textContent='AR inmersiva disponible. Esta versión mantiene la experiencia como prototipo y no inicia cámara automáticamente.';
+      arDemo.classList.add('active');
+    }catch(e){
+      arState.textContent='No se pudo comprobar WebXR. Se muestra la alternativa sin permisos.';
+      arDemo.classList.add('active');
+    }
+  }
+
+  document.getElementById('startAR').onclick=checkAR;
+  document.getElementById('startARMap').onclick=()=>{
+    document.querySelector('.arSection').scrollIntoView({behavior:'smooth'});
+    checkAR();
+  };
+
+  document.getElementById('beginScientificTrip').onclick=()=>map.fitBounds(allBounds.pad(.18));
+
+  /* ---------------- MY MAPS ---------------- */
+  if(window.TERRA_CONFIG?.myMaps?.enabled && window.TERRA_CONFIG.myMaps.embedUrl){
+    const f=document.createElement('iframe');
+    f.className='myMapFrame';
+    f.src=window.TERRA_CONFIG.myMaps.embedUrl;
+    f.title='Google My Maps integrado en TerraOS';
+    f.loading='lazy';
+    document.getElementById('myMapBox').replaceWith(f);
+    document.getElementById('myMapState').textContent='Mapa público configurado en TerraOS.';
+  }
+
+  /* Exponer compatibilidad visual */
+  setTimeout(()=>map.invalidateSize(),250);
+})();
+</script>
+
+<script src="app-96.js"></script>
+<script src="app-97.js"></script>
+<script src="app-100.js"></script>
+</body>
+</html>

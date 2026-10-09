@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TerraOS 11.0 · Tienda ARCA</title>
+
+<link rel="stylesheet" href="module.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="terraos-97.css">
+<link rel="stylesheet" href="terraos-98.css">
+<link rel="stylesheet" href="terraos-100.css">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+:root{
+  --arca-ink:#143d35;
+  --arca-green:#236b5b;
+  --arca-mint:#dfeee7;
+  --arca-cream:#f6f1e7;
+  --arca-sand:#dfc9a3;
+  --arca-copper:#b77f55;
+  --arca-line:rgba(20,61,53,.16);
+  --arca-shadow:0 24px 60px rgba(34,55,48,.18);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body.arcaPage{margin:0;background:var(--arca-cream);color:#19352f}
+.moduleHeader{position:sticky;top:0;z-index:1000;backdrop-filter:blur(16px);background:rgba(250,248,242,.94);border-bottom:1px solid var(--arca-line)}
+.arcaHero{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(340px,.82fr);min-height:calc(100vh - 74px);background:
+radial-gradient(circle at 77% 20%,rgba(223,201,163,.55),transparent 32%),
+linear-gradient(135deg,#f9f6ef 0%,#eef4ef 58%,#e6d7bf 100%)}
+.mapStage{position:relative;min-height:680px;overflow:hidden;border-right:1px solid var(--arca-line)}
+#arcaMap{position:absolute;inset:0;z-index:1}
+.mapWash{position:absolute;inset:0;pointer-events:none;z-index:2;background:linear-gradient(90deg,rgba(15,50,43,.06),transparent 24%,transparent 74%,rgba(247,243,234,.18))}
+.mapCaption{position:absolute;left:28px;top:28px;z-index:4;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);padding:13px 16px;border-radius:18px;box-shadow:0 12px 30px rgba(20,61,53,.16);max-width:280px;border:1px solid rgba(255,255,255,.8)}
+.mapCaption small{display:block;letter-spacing:.14em;text-transform:uppercase;color:#6e817b;font-size:.68rem;margin-bottom:4px}
+.mapCaption strong{font-family:Georgia,serif;font-size:1.05rem;color:var(--arca-ink)}
+.mapHint{position:absolute;left:28px;bottom:28px;z-index:4;background:rgba(20,61,53,.92);color:#fff;padding:12px 15px;border-radius:999px;font-size:.78rem;box-shadow:0 10px 25px rgba(20,61,53,.25)}
+.storyPanel{padding:clamp(34px,5vw,78px);display:flex;align-items:center}
+.storyInner{max-width:560px}
+.eyebrow{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--arca-green);margin:0 0 14px}
+.storyPanel h1{font-family:Georgia,serif;font-weight:500;line-height:.97;font-size:clamp(3rem,6.2vw,6.6rem);margin:0;color:var(--arca-ink);letter-spacing:-.045em}
+.storyPanel h1 em{font-style:normal;color:var(--arca-copper)}
+.storyLead{font-size:1.08rem;line-height:1.65;color:#50635e;max-width:48ch;margin:28px 0}
+.heroRule{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;border-top:1px solid var(--arca-line);padding-top:18px}
+.heroRule b{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--arca-green)}
+.heroRule span{font-family:Georgia,serif;color:#556761}
+.storeTrigger{margin-top:32px;border:0;background:var(--arca-ink);color:white;padding:15px 20px;border-radius:14px;font-weight:800;cursor:pointer;box-shadow:0 14px 30px rgba(20,61,53,.22)}
+.storeTrigger:hover{transform:translateY(-1px)}
+.storeReveal{position:fixed;inset:0;z-index:2000;display:none;align-items:flex-end;justify-content:center;background:rgba(8,25,22,.52);backdrop-filter:blur(4px)}
+.storeReveal.open{display:flex}
+.storeCard{width:min(760px,calc(100% - 28px));margin:14px;background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,.28);animation:rise .38s ease}
+@keyframes rise{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.storeCardTop{display:grid;grid-template-columns:140px 1fr;gap:22px;padding:24px;background:linear-gradient(135deg,#183f36,#2c725f);color:white}
+.ammoniteBadge{width:140px;height:140px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#d8c29d,#ad7b52 62%,#704833);box-shadow:inset 0 0 0 10px rgba(255,255,255,.08)}
+.ammoniteBadge:before{content:"◉";font-size:62px;color:#f8f3e9;transform:rotate(-18deg)}
+.storeCardTop h2{font-family:Georgia,serif;font-weight:500;font-size:2.4rem;margin:5px 0 8px}
+.storeCardTop p{margin:0;color:#d9e7e2;line-height:1.5}
+.storeActions{display:flex;gap:10px;flex-wrap:wrap;padding:18px 24px 24px}
+.storeActions button,.storeActions a{border:0;border-radius:12px;padding:13px 16px;font-weight:800;text-decoration:none;cursor:pointer}
+.enterShop{background:var(--arca-ink);color:#fff}
+.closeShop{background:#eef3ef;color:var(--arca-ink)}
+.catalog{padding:90px max(22px,6vw);background:#fbfaf6}
+.catalogHead{display:grid;grid-template-columns:1fr minmax(280px,.6fr);gap:30px;align-items:end;margin-bottom:38px}
+.catalogHead h2{font-family:Georgia,serif;font-size:clamp(2.6rem,5vw,5rem);font-weight:500;line-height:1;margin:0;color:var(--arca-ink)}
+.catalogHead p{color:#667772;line-height:1.6;margin:0}
+.productGrid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.product{position:relative;overflow:hidden;background:white;border:1px solid var(--arca-line);border-radius:26px;padding:0;box-shadow:0 14px 30px rgba(25,53,47,.07)}
+.product.big{grid-column:span 6}
+.product.small{grid-column:span 3}
+.productVisual{height:250px;display:grid;place-items:center;background:linear-gradient(135deg,#e7eee8,#d9c8ad);position:relative;overflow:hidden}
+.productVisual img{width:100%;height:100%;object-fit:cover}
+.productVisual.mapArt{background:
+linear-gradient(135deg,rgba(30,91,77,.88),rgba(189,145,92,.45)),
+repeating-linear-gradient(25deg,transparent 0 14px,rgba(255,255,255,.18) 14px 15px)}
+.productVisual.fossilArt{background:radial-gradient(circle at center,#d7bc8b 0 18%,#b4865d 19% 35%,#8e6549 36% 48%,#e8dec8 49% 100%)}
+.productVisual span{font-family:Georgia,serif;font-size:2.3rem;color:white;letter-spacing:.08em;text-shadow:0 4px 16px rgba(0,0,0,.22)}
+.productBody{padding:23px}
+.productTag{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--arca-green);font-weight:900}
+.product h3{font-family:Georgia,serif;font-size:1.65rem;font-weight:500;margin:8px 0 10px;color:var(--arca-ink)}
+.product p{color:#65756f;line-height:1.5}
+.productMeta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.meta{padding:10px 12px;background:#f6f7f3;border-radius:12px}
+.meta b{display:block;font-size:.66rem;text-transform:uppercase;color:#7d8a85;margin-bottom:2px}
+.meta span{font-size:.85rem;color:#2e4a43}
+.wa{display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:#1f6a59;color:white;padding:12px 14px;border-radius:12px;font-weight:800}
+.territoryStrip{padding:54px max(22px,6vw);background:var(--arca-ink);color:white;display:grid;grid-template-columns:1.1fr .9fr;gap:38px;align-items:center}
+.territoryStrip h2{font-family:Georgia,serif;font-weight:500;font-size:clamp(2rem,4vw,4rem);margin:0}
+.territoryStrip p{color:#cfe0da;line-height:1.65}
+.demoNotice{padding:16px max(22px,6vw);background:#f1eadc;color:#6c5c45;font-size:.78rem;border-top:1px solid rgba(108,92,69,.16)}
+.arca-marker{width:54px;height:54px;border-radius:50%;background:linear-gradient(145deg,#19493f,#9b6b48);display:grid;place-items:center;border:4px solid white;box-shadow:0 10px 26px rgba(20,61,53,.35);font-family:Georgia,serif;color:white;font-weight:700;font-size:.86rem;position:relative}
+.arca-marker:after{content:"";position:absolute;width:68px;height:68px;border-radius:50%;border:1px solid rgba(35,107,91,.45);animation:pulse 2s infinite}
+@keyframes pulse{0%{transform:scale(.7);opacity:.8}100%{transform:scale(1.35);opacity:0}}
+.leaflet-popup-content-wrapper{border-radius:18px!important;padding:2px}
+.leaflet-popup-content{margin:14px!important}
+.popupArca b{font-family:Georgia,serif;font-size:1.1rem;color:var(--arca-ink)}
+.popupArca button{display:block;width:100%;margin-top:10px;border:0;border-radius:10px;padding:10px;background:var(--arca-ink);color:#fff;font-weight:800;cursor:pointer}
+@media(max-width:1000px){
+  .arcaHero{grid-template-columns:1fr}
+  .mapStage{min-height:56vh;border-right:0;border-bottom:1px solid var(--arca-line)}
+  .storyPanel{min-height:auto}
+  .product.big,.product.small{grid-column:span 6}
+  .catalogHead,.territoryStrip{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .product.big,.product.small{grid-column:span 12}
+  .storeCardTop{grid-template-columns:1fr}
+  .ammoniteBadge{width:96px;height:96px}
+  .storyPanel h1{font-size:3.2rem}
+}
+</style>
+
+<style id="terraos-market-nav-107">
+.moduleNav .marketNavLink{
+  color:#b47c53!important;
+  border:1px solid rgba(180,124,83,.22);
+  background:rgba(246,241,231,.64);
+}
+.moduleNav .marketNavLink:hover{
+  background:#f1e5d5!important;
+  color:#123a32!important;
+}
+</style>
+
+</head>
+
+<body class="arcaPage">
+<header class="moduleHeader">
+  <a class="brand" href="index.html">
+    <img src="assets/terraos-amonita-v2.webp" alt="Amonita">
+    <span>Terra<span>OS</span><small>INTELIGENCIA TERRITORIAL</small></span><b>11.0</b>
+  </a>
+  <nav class="moduleNav">
+    <a href="consultoria.html">NUESTROS SERVICIOS</a>
+    <a class="marketNavLink" href="index.html?soil=1&market=1#marketProjectHeading">COMERCIO PREDIAL</a>
+    <a class="active" href="arca.html">TIENDA ARCA</a>
+    <a href="proyecto.html">GESTIONE SU PROYECTO</a>
+    <a href="territorio.html">NUESTRO TERRITORIO</a>
+  </nav>
+  <details class="municipalityMenu moduleMunicipality">
+    <summary>Municipios</summary>
+    <div class="municipalityPanel">
+      <label for="municipalitySelect">Paquete territorial</label>
+      <select id="municipalitySelect"></select>
+      <div id="municipalityStatus" class="municipalityStatus"></div>
+    </div>
+  </details>
+  <a class="soilHeaderBtn" href="index.html?soil=1">Gestión del suelo</a>
+  <a href="index.html" class="back">← Visor</a>
+</header>
+
+<section class="arcaHero">
+  <div class="mapStage">
+    <div id="arcaMap" aria-label="Mapa de localización de Tienda ARCA"></div>
+    <div class="mapWash"></div>
+    <div class="mapCaption">
+      <small>Villa de Leyva · prototipo territorial</small>
+      <strong>La tienda existe en un lugar, no fuera del territorio.</strong>
+    </div>
+    <div class="mapHint">● Pulse el punto ARCA para entrar a la tienda</div>
+  </div>
+
+  <div class="storyPanel">
+    <div class="storyInner">
+      <p class="eyebrow">ARCA · OBJETOS DEL TERRITORIO</p>
+      <h1>Una tienda que <em>nace del lugar.</em></h1>
+      <p class="storyLead">
+        ARCA convierte territorio, cartografía y memoria en objetos que se pueden llevar.
+        La experiencia comienza en el predio: ubíquelo, entre a la tienda y explore sus piezas.
+      </p>
+      <div class="heroRule">
+        <b>Concepto</b>
+        <span>Territorio → lugar → objeto → historia.</span>
+      </div>
+      <button class="storeTrigger" id="openShopTop">Localizar ARCA en el mapa ↗</button>
+    </div>
+  </div>
+</section>
+
+<section class="catalog" id="catalog">
+  <div class="catalogHead">
+    <div>
+      <p class="eyebrow">COLECCIÓN INICIAL</p>
+      <h2>Objetos con una coordenada de origen.</h2>
+    </div>
+    <p>
+      Esta colección inicial funciona como prototipo comercial. Cada pieza puede crecer después
+      con inventario, variantes, fotografías, ficha técnica y enlace directo a WhatsApp Business.
+    </p>
+  </div>
+
+  <div class="productGrid">
+    <article class="product big">
+      <div class="productVisual">
+        <img src="assets/kit-arca-ruta.webp" alt="Producto conceptual ARCA">
+      </div>
+      <div class="productBody">
+        <span class="productTag">01 · ACCESORIO</span>
+        <h3>Manilla para portar el celular</h3>
+        <p>Una pieza funcional inspirada en la relación entre recorrido, cuerpo y territorio.</p>
+        <div class="productMeta">
+          <div class="meta"><b>Materiales</b><span>Por definir</span></div>
+          <div class="meta"><b>Disponibilidad</b><span>Consultar</span></div>
+        </div>
+        <a class="wa" data-product="Manilla para portar el celular">Consultar por WhatsApp ↗</a>
+      </div>
+    </article>
+
+    <article class="product small">
+      <div class="productVisual mapArt"><span>MAPA</span></div>
+      <div class="productBody">
+        <span class="productTag">02 · INTERPRETACIÓN</span>
+        <h3>Mapa turístico</h3>
+        <p>El territorio convertido en pieza gráfica para explorar, recordar y orientar.</p>
+        <div class="productMeta">
+          <div class="meta"><b>Formato</b><span>Por definir</span></div>
+          <div class="meta"><b>Precio</b><span>Consultar</span></div>
+        </div>
+        <a class="wa" data-product="Mapa turístico">Consultar por WhatsApp ↗</a>
+      </div>
+    </article>
+
+    <article class="product small">
+      <div class="productVisual fossilArt"><span>AMONITA</span></div>
+      <div class="productBody">
+        <span class="productTag">03 · PATRIMONIO</span>
+        <h3>Pisapapeles</h3>
+        <p>Objeto de escritorio inspirado en la amonita y el patrimonio geológico.</p>
+        <div class="productMeta">
+          <div class="meta"><b>Material</b><span>Por definir</span></div>
+          <div class="meta"><b>Precio</b><span>Consultar</span></div>
+        </div>
+        <a class="wa" data-product="Pisapapeles inspirado en la amonita">Consultar por WhatsApp ↗</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="territoryStrip">
+  <h2>ARCA no es solo una tienda. Es una interfaz cultural del territorio.</h2>
+  <p>
+    En futuras versiones, el punto ARCA podrá vincular inventario, ubicación real,
+    rutas peatonales, realidad aumentada, historias del lugar y productos de artesanos.
+    El mapa será la puerta de entrada y el objeto, la salida material del territorio.
+  </p>
+</section>
+
+<div class="demoNotice">
+  Prototipo TerraOS 10.1: la localización y el polígono mostrados son demostrativos hasta incorporar el predio real de ARCA.
+</div>
+
+<div class="storeReveal" id="storeReveal" aria-hidden="true">
+  <div class="storeCard">
+    <div class="storeCardTop">
+      <div class="ammoniteBadge"></div>
+      <div>
+        <p class="eyebrow" style="color:#d8c9aa;margin-bottom:5px">USTED ESTÁ AQUÍ</p>
+        <h2>Tienda ARCA</h2>
+        <p>Un punto del territorio se convierte en una experiencia, una colección y una historia.</p>
+      </div>
+    </div>
+    <div class="storeActions">
+      <button class="enterShop" id="enterShop">Entrar a la tienda</button>
+      <button class="closeShop" id="closeShop">Seguir explorando el mapa</button>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  const ARCA = { lat: 5.63365, lng: -73.52452 }; // DEMO, reemplazar por coordenada real.
+
+  const map = L.map('arcaMap',{zoomControl:true,scrollWheelZoom:true}).setView([ARCA.lat,ARCA.lng],16);
+
+  const imagery = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    { attribution:'Tiles © Esri', maxZoom:19 }
+  ).addTo(map);
+
+  const topo = L.tileLayer(
+    'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+    { attribution:'© OpenTopoMap contributors', maxZoom:17 }
+  );
+
+  L.control.layers({'Esri imágenes':imagery,'OpenTopoMap':topo},null,{position:'bottomright',collapsed:true}).addTo(map);
+
+  const parcel = L.polygon([
+    [5.63408,-73.52510],
+    [5.63410,-73.52428],
+    [5.63357,-73.52417],
+    [5.63328,-73.52488]
+  ],{
+    color:'#c89a5c',weight:3,fillColor:'#e3c79b',fillOpacity:.18,dashArray:'7 7'
+  }).addTo(map);
+
+  parcel.bindTooltip('Predio ARCA · demostrativo',{permanent:false,direction:'center'});
+
+  const icon = L.divIcon({
+    className:'',
+    html:'<div class="arca-marker">ARCA</div>',
+    iconSize:[54,54],
+    iconAnchor:[27,27]
+  });
+
+  const reveal = document.getElementById('storeReveal');
+  function openStore(){
+    reveal.classList.add('open');
+    reveal.setAttribute('aria-hidden','false');
+  }
+  function closeStore(){
+    reveal.classList.remove('open');
+    reveal.setAttribute('aria-hidden','true');
+  }
+
+  const marker = L.marker([ARCA.lat,ARCA.lng],{icon}).addTo(map);
+  marker.bindPopup(
+    '<div class="popupArca"><b>Tienda ARCA</b><br><small>Objetos para llevar y contar el territorio.</small><button type="button" id="popupEnter">Entrar a la tienda</button></div>'
+  );
+
+  marker.on('click',function(){
+    marker.openPopup();
+    setTimeout(()=>{
+      const b=document.getElementById('popupEnter');
+      if(b) b.addEventListener('click',openStore,{once:true});
+    },0);
+  });
+
+  document.getElementById('openShopTop').addEventListener('click',()=>{
+    map.flyTo([ARCA.lat,ARCA.lng],18,{duration:1.2});
+    marker.openPopup();
+    setTimeout(()=>{
+      const b=document.getElementById('popupEnter');
+      if(b) b.addEventListener('click',openStore,{once:true});
+    },550);
+  });
+
+  document.getElementById('enterShop').addEventListener('click',()=>{
+    closeStore();
+    document.getElementById('catalog').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  document.getElementById('closeShop').addEventListener('click',closeStore);
+  reveal.addEventListener('click',e=>{if(e.target===reveal) closeStore()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape') closeStore()});
+
+  const phone=(window.TERRA_CONFIG?.whatsapp?.phone)||'573144429234';
+  document.querySelectorAll('.wa').forEach(a=>{
+    a.href='https://wa.me/'+phone+'?text='+encodeURIComponent('Hola. Deseo consultar el producto ARCA: '+a.dataset.product+'.');
+    a.target='_blank';
+    a.rel='noopener';
+  });
+})();
+</script>
+
+<script src="app-96.js"></script>
+<script src="app-97.js"></script>
+<script src="app-100.js"></script>
+</body>
+</html>

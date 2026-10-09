@@ -1,0 +1,1079 @@
+:root{
+  --t-ink:#123a32;
+  --t-green:#1e6555;
+  --t-green-2:#2f7b67;
+  --t-cream:#f6f1e7;
+  --t-paper:#fbfaf6;
+  --t-sand:#dfc9a3;
+  --t-copper:#b47b52;
+  --t-line:rgba(18,58,50,.14);
+  --t-muted:#6b7c76;
+  --t-shadow:0 20px 60px rgba(27,55,48,.15);
+  --t-soft-shadow:0 10px 30px rgba(27,55,48,.09);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--t-cream);
+  color:#183a32;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button,input,select{font:inherit}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:16px;top:16px;z-index:9999;background:#fff;padding:10px 14px;border-radius:10px}
+
+/* HEADER */
+header{
+  min-height:68px;
+  padding:8px 16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:nowrap;
+  position:sticky;
+  top:0;
+  z-index:1200;
+  background:rgba(250,248,242,.94);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--t-line);
+  box-shadow:0 8px 24px rgba(18,58,50,.04);
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--t-ink);
+  min-width:max-content;
+}
+.brand img{width:38px;height:38px;object-fit:contain}
+.brand>span{
+  display:inline-flex;
+  align-items:baseline;
+  gap:1px;
+  font-family:Georgia,serif;
+  font-weight:700;
+  font-size:1.38rem;
+  letter-spacing:-.03em;
+}
+.brand .os{color:var(--t-copper)}
+.brand small{
+  display:block;
+  font-family:Inter,ui-sans-serif,sans-serif;
+  font-size:.50rem;
+  letter-spacing:.18em;
+  color:#72817c;
+  margin-left:8px;
+}
+.brand b{
+  margin-left:4px;
+  background:#edf2ed;
+  border:1px solid var(--t-line);
+  color:var(--t-green);
+  padding:7px 9px;
+  border-radius:9px;
+  font-size:.72rem;
+}
+.primaryNav{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  flex-wrap:nowrap;
+  white-space:nowrap;
+}
+.primaryNav a{
+  padding:9px 9px;
+  border-radius:10px;
+  text-decoration:none;
+  font-size:.62rem;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:.08em;
+  color:#3c6e61;
+  transition:.2s ease;
+}
+.primaryNav a:hover{background:#eef2ec;color:var(--t-ink)}
+.municipalityMenu{
+  order:1;
+  position:relative;
+}
+.municipalityMenu summary{
+  list-style:none;
+  cursor:pointer;
+  padding:9px 11px;
+  border:1px solid var(--t-line);
+  background:#edf2ed;
+  border-radius:11px;
+  color:var(--t-green);
+  font-size:.8rem;
+  font-weight:800;
+}
+.municipalityMenu summary::-webkit-details-marker{display:none}
+.municipalityPanel{
+  position:absolute;
+  top:48px;
+  left:0;
+  width:260px;
+  padding:16px;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:var(--t-shadow);
+  border:1px solid var(--t-line);
+}
+.municipalityPanel label{font-size:.72rem;font-weight:800;color:#62766f}
+.municipalityPanel select{width:100%;margin:7px 0 8px;padding:10px;border:1px solid var(--t-line);border-radius:10px}
+.soilHeaderBtn,#menuBtn{
+  border:0;
+  border-radius:10px;
+  padding:10px 12px;
+  font-weight:800;
+  cursor:pointer;
+}
+.soilHeaderBtn{background:var(--t-ink);color:#fff}
+#menuBtn{background:#eef1eb;color:var(--t-ink)}
+
+/* TERRITORIAL STRIP */
+.territorialPath{
+  height:34px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:0 18px;
+  background:var(--t-ink);
+  color:#dfece7;
+  font-size:.67rem;
+  letter-spacing:.02em;
+}
+.territorialPath b{color:#fff}
+.territorialPath span{opacity:.55}
+
+/* MAIN LAYOUT */
+main{
+  display:grid;
+  grid-template-columns:minmax(320px,360px) minmax(0,1fr);
+  min-height:calc(100vh - 108px);
+  background:var(--t-paper);
+}
+#panel{
+  position:relative;
+  z-index:10;
+  padding:28px 22px 40px;
+  overflow:auto;
+  max-height:calc(100vh - 108px);
+  background:
+    radial-gradient(circle at 8% 0%,rgba(223,201,163,.24),transparent 28%),
+    linear-gradient(180deg,#fbfaf6,#f7f4ed 100%);
+  border-right:1px solid var(--t-line);
+}
+.eyebrow{
+  margin:0 0 10px;
+  font-size:.66rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-weight:900;
+  color:var(--t-green-2);
+}
+#panel h1{
+  margin:0;
+  font-family:Georgia,serif;
+  font-weight:500;
+  letter-spacing:-.035em;
+  line-height:1;
+  color:var(--t-ink);
+  font-size:clamp(2.35rem,3.8vw,4rem);
+}
+#panel .intro{
+  color:#64756f;
+  font-size:.92rem;
+  line-height:1.55;
+  margin:16px 0 18px;
+}
+.contactInline{
+  display:block;
+  padding:12px 13px;
+  border:1px solid var(--t-line);
+  background:rgba(255,255,255,.6);
+  color:var(--t-green);
+  border-radius:12px;
+  font-size:.76rem;
+  font-weight:800;
+  text-decoration:none;
+}
+.soilTabs{
+  margin:16px 0 18px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:5px;
+  padding:5px;
+  background:#e9eee8;
+  border-radius:15px;
+}
+.soilTabs button{
+  border:0;
+  min-height:52px;
+  padding:8px 7px;
+  border-radius:11px;
+  background:transparent;
+  color:#71807b;
+  font-size:.69rem;
+  font-weight:800;
+  cursor:pointer;
+}
+.soilTabs button.active{
+  background:#fff;
+  color:var(--t-green);
+  box-shadow:0 4px 12px rgba(18,58,50,.08);
+}
+#consult,#search,#project{
+  padding:17px 0;
+  border-top:1px solid var(--t-line);
+}
+#panel label{
+  display:block;
+  font-size:.72rem;
+  font-weight:800;
+  color:#527168;
+  margin-bottom:7px;
+}
+#panel input,#panel select{
+  width:100%;
+  padding:11px 12px;
+  border:1px solid rgba(18,58,50,.14);
+  background:#fff;
+  border-radius:10px;
+  outline:none;
+  color:#23443b;
+}
+#panel input:focus,#panel select:focus{border-color:#4f8b79;box-shadow:0 0 0 3px rgba(47,123,103,.11)}
+.inline{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.primary{
+  border:0;
+  background:var(--t-green);
+  color:white;
+  border-radius:10px;
+  padding:11px 16px;
+  font-weight:800;
+  cursor:pointer;
+}
+.tools{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.tools button,#addCriteria,#recalculate{
+  border:1px solid var(--t-line);
+  background:#f2f4ef;
+  color:#42665d;
+  padding:9px 11px;
+  border-radius:9px;
+  font-size:.75rem;
+  font-weight:800;
+  cursor:pointer;
+}
+.hint{font-size:.73rem;line-height:1.45;color:#80908a}
+#panel details{
+  margin-top:12px;
+  border-top:1px solid var(--t-line);
+  padding-top:12px;
+}
+#panel details summary{
+  cursor:pointer;
+  color:#506b63;
+  font-size:.76rem;
+  font-weight:800;
+}
+#result{
+  margin-top:16px;
+  border-radius:18px;
+}
+#notice{
+  margin-top:16px;
+  font-size:.72rem;
+  color:#70817a;
+}
+.projectActions{display:grid;gap:9px;margin-top:14px}
+.actionCard{
+  display:block;
+  text-decoration:none;
+  background:#fff;
+  border:1px solid var(--t-line);
+  border-radius:15px;
+  padding:14px;
+  color:#29473f;
+}
+.actionCard span{font-size:.62rem;letter-spacing:.13em;color:var(--t-copper);font-weight:900}
+.actionCard strong{display:block;margin:4px 0;font-family:Georgia,serif;font-size:1.05rem}
+.actionCard small{color:#71807a}
+
+/* MAP AS SCENARIO */
+.mapWrap{
+  position:relative;
+  min-width:0;
+  background:#dfe5de;
+  overflow:hidden;
+}
+#map{position:absolute;inset:0}
+.mapTop{
+  position:absolute;
+  left:18px;
+  top:18px;
+  right:auto;
+  z-index:500;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.mapLabel{
+  min-width:230px;
+  padding:11px 14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.90);
+  backdrop-filter:blur(14px);
+  box-shadow:var(--t-soft-shadow);
+  border:1px solid rgba(255,255,255,.85);
+}
+.mapLabel .dot{
+  display:inline-block;
+  width:8px;height:8px;border-radius:50%;
+  background:#4f8b79;
+  margin-right:7px;
+}
+.mapLabel>span:not(.dot){font-family:Georgia,serif;color:var(--t-ink);font-weight:700}
+.mapLabel small{display:block;margin:3px 0 0 15px;color:#7a8984;font-size:.63rem}
+#extent{
+  border:0;
+  background:rgba(255,255,255,.9);
+  color:var(--t-ink);
+  border-radius:13px;
+  padding:11px 13px;
+  font-size:.75rem;
+  font-weight:800;
+  box-shadow:var(--t-soft-shadow);
+}
+
+/* Progressive stair dock */
+.mapTools{
+  position:absolute;
+  z-index:520;
+  top:92px;
+  right:16px;
+  width:190px;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  pointer-events:auto;
+}
+.toolStep{
+  border:1px solid rgba(255,255,255,.72);
+  background:rgba(250,248,242,.91);
+  backdrop-filter:blur(14px);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 10px 26px rgba(18,58,50,.10);
+}
+.toolStep:nth-child(2){margin-left:12px}
+.toolStep:nth-child(3){margin-left:24px}
+.toolStep:nth-child(4){margin-left:36px}
+.toolStep summary{
+  list-style:none;
+  cursor:pointer;
+  padding:10px 12px;
+  color:var(--t-ink);
+  font-size:.72rem;
+  font-weight:900;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.toolStep summary::-webkit-details-marker{display:none}
+.toolStep summary:after{content:"+";color:#81908a}
+.toolStep[open] summary:after{content:"–"}
+.toolGroup{
+  display:grid;
+  gap:6px;
+  padding:0 8px 8px;
+}
+.mapTools button{
+  width:100%;
+  text-align:left;
+  border:0;
+  border-radius:9px;
+  padding:8px 9px;
+  background:#fff;
+  color:#47665e;
+  font-size:.69rem;
+  font-weight:800;
+  cursor:pointer;
+}
+.mapTools button:hover{background:#edf3ee;color:var(--t-ink)}
+.mapTools button:disabled{opacity:.42;cursor:not-allowed}
+
+/* LEGEND / REMOTE STATUS */
+.mapLegend{
+  position:absolute;
+  left:18px;
+  bottom:46px;
+  z-index:500;
+  width:min(290px,calc(100% - 36px));
+  border:1px solid rgba(255,255,255,.78);
+  border-radius:13px;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(12px);
+  box-shadow:var(--t-soft-shadow);
+  overflow:hidden;
+}
+.mapLegend summary{
+  list-style:none;
+  cursor:pointer;
+  padding:10px 12px;
+  font-size:.7rem;
+  font-weight:800;
+  color:#526d64;
+}
+.mapLegend summary::-webkit-details-marker{display:none}
+.mapLegend>div,.mapLegend>p{padding:0 12px 8px;margin:0}
+#igacStatus{
+  position:absolute;
+  right:14px;
+  bottom:46px;
+  z-index:490;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(8px);
+  padding:7px 9px;
+  border-radius:9px;
+  color:#65776f;
+  font-size:.62rem;
+}
+.mapBottom{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  z-index:480;
+  min-height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:0 18px;
+  background:linear-gradient(90deg,rgba(250,248,242,.94),rgba(250,248,242,.78));
+  backdrop-filter:blur(10px);
+  color:#6a7a74;
+  border-top:1px solid rgba(18,58,50,.08);
+  font-size:.62rem;
+}
+
+/* Dialog */
+dialog{
+  border:0;
+  border-radius:22px;
+  width:min(720px,calc(100% - 28px));
+  box-shadow:0 30px 100px rgba(0,0,0,.24);
+}
+.dialogHead{display:flex;align-items:center;justify-content:space-between}
+#closeModal{border:0;background:#edf1ec;border-radius:9px;padding:8px 10px;cursor:pointer}
+
+/* Leaflet */
+.leaflet-control-zoom a{color:var(--t-ink)!important}
+.leaflet-control-attribution{font-size:9px!important;background:rgba(255,255,255,.72)!important}
+
+/* responsive */
+@media(max-width:1100px){
+  .primaryNav{display:none}
+  main{grid-template-columns:350px minmax(0,1fr)}
+}
+@media(max-width:820px){
+  header{flex-wrap:wrap}
+  main{grid-template-columns:1fr;grid-template-rows:auto 68vh}
+  #panel{max-height:none;border-right:0;border-bottom:1px solid var(--t-line)}
+  .mapWrap{min-height:68vh}
+  .mapTools{right:10px;width:170px}
+  .mapTop{left:10px;top:10px}
+}
+
+/* ===== TerraOS 10.5 · Comercio predial ===== */
+.marketIntro{
+  margin-top:18px;
+  padding:16px;
+  border:1px solid var(--t-line);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(223,201,163,.30),transparent 30%),
+    linear-gradient(145deg,#fff,#f5f4ed);
+}
+.marketIntro .eyebrow{margin-bottom:6px}
+.marketIntro h3{
+  margin:0 0 8px;
+  font-family:Georgia,serif;
+  font-size:1.45rem;
+  font-weight:500;
+  line-height:1.05;
+  color:var(--t-ink);
+}
+.marketIntro p{margin:0;color:#6d7e78;font-size:.78rem;line-height:1.5}
+.marketDecisionGrid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:9px;
+  margin-top:12px;
+}
+.marketDecision{
+  display:grid;
+  grid-template-columns:38px 1fr auto;
+  gap:10px;
+  align-items:center;
+  width:100%;
+  padding:12px;
+  border:1px solid var(--t-line);
+  border-radius:14px;
+  background:#fff;
+  color:#29473f;
+  cursor:pointer;
+  text-align:left;
+}
+.marketDecision:hover{background:#f1f5f0}
+.marketDecision .marketIcon{
+  width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#edf2ed;color:var(--t-green);
+  font-weight:900;
+}
+.marketDecision strong{
+  display:block;
+  font-family:Georgia,serif;
+  font-size:1rem;
+  font-weight:500;
+  color:var(--t-ink);
+}
+.marketDecision small{display:block;color:#788882;font-size:.68rem;line-height:1.35;margin-top:2px}
+.marketDecision em{font-style:normal;color:var(--t-copper);font-weight:900}
+.marketShelf{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--t-line);
+}
+.marketShelfHead{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:9px}
+.marketShelfHead h3{margin:0;font-family:Georgia,serif;font-size:1.15rem;font-weight:500;color:var(--t-ink)}
+.marketShelfHead span{font-size:.62rem;color:#7b8a84}
+.marketListings{display:grid;gap:8px}
+.marketEmpty{
+  padding:14px;
+  border:1px dashed #bdcabc;
+  border-radius:12px;
+  color:#788882;
+  font-size:.72rem;
+  line-height:1.45;
+}
+.marketMiniCard{
+  padding:12px;
+  border:1px solid var(--t-line);
+  border-radius:13px;
+  background:#fff;
+}
+.marketMiniCardTop{display:flex;justify-content:space-between;gap:10px;align-items:start}
+.marketMiniCard b{font-family:Georgia,serif;color:var(--t-ink);font-weight:500}
+.marketMiniCard .tag{
+  font-size:.57rem;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--t-green);
+  font-weight:900;
+}
+.marketMiniCard p{margin:5px 0;color:#6f817a;font-size:.68rem;line-height:1.4}
+.marketMiniCard .price{color:var(--t-copper);font-weight:900}
+
+/* Market modal */
+#marketModal{
+  width:min(980px,calc(100% - 24px));
+  max-height:92vh;
+  padding:0;
+  border:0;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 30px 100px rgba(0,0,0,.28);
+}
+#marketModal::backdrop{background:rgba(8,25,22,.55);backdrop-filter:blur(4px)}
+.marketModalHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 20px;
+  background:var(--t-ink);
+  color:white;
+}
+.marketModalHead div small{
+  display:block;
+  color:#d6c49f;
+  font-size:.6rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.marketModalHead h2{
+  margin:3px 0 0;
+  font-family:Georgia,serif;
+  font-weight:500;
+  font-size:1.5rem;
+}
+#marketClose{
+  border:0;background:rgba(255,255,255,.12);color:white;
+  width:34px;height:34px;border-radius:50%;cursor:pointer
+}
+.marketModalBody{
+  display:grid;
+  grid-template-columns:minmax(340px,.92fr) minmax(0,1.08fr);
+  min-height:600px;
+  background:#fbfaf6;
+}
+.marketMapPane{position:relative;min-height:600px;background:#dfe5de}
+#marketMap{position:absolute;inset:0}
+.marketMapCaption{
+  position:absolute;left:16px;top:16px;z-index:500;
+  width:min(300px,calc(100% - 32px));
+  padding:12px 14px;
+  background:rgba(255,255,255,.91);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.8);
+  border-radius:15px;
+  box-shadow:var(--t-soft-shadow);
+}
+.marketMapCaption small{
+  display:block;
+  font-size:.58rem;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:#788983;
+}
+.marketMapCaption strong{
+  display:block;margin-top:4px;
+  font-family:Georgia,serif;
+  font-size:1.05rem;
+  color:var(--t-ink);
+}
+.marketMapCaption p{margin:5px 0 0;color:#687a73;font-size:.68rem;line-height:1.4}
+.marketFormPane{
+  padding:22px;
+  overflow:auto;
+  max-height:76vh;
+}
+.marketSummary{
+  padding:14px;
+  border:1px solid var(--t-line);
+  border-radius:14px;
+  background:#fff;
+  margin-bottom:14px;
+}
+.marketSummary small{
+  display:block;
+  font-size:.58rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#82918b;
+  margin-bottom:5px;
+}
+.marketSummary strong{
+  font-family:Georgia,serif;
+  font-size:1.08rem;
+  color:var(--t-ink);
+}
+.marketSummary p{
+  margin:7px 0 0;
+  color:#6d7d77;
+  font-size:.72rem;
+  line-height:1.5;
+}
+.marketFields{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.marketFields label{
+  display:block;
+  color:#567068;
+  font-size:.68rem;
+  font-weight:900;
+}
+.marketFields input,.marketFields select,.marketFields textarea{
+  width:100%;
+  margin-top:5px;
+  padding:10px 11px;
+  border:1px solid var(--t-line);
+  border-radius:10px;
+  background:#fff;
+  color:#29493f;
+}
+.marketFields textarea{min-height:90px;resize:vertical}
+.marketFields .full{grid-column:1/-1}
+.marketPhotoPreview{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px}
+.marketPhotoPreview img{
+  width:64px;height:64px;object-fit:cover;border-radius:9px;border:1px solid var(--t-line)
+}
+.marketActions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+.marketActions button{
+  border:0;border-radius:10px;padding:10px 13px;font-weight:900;cursor:pointer
+}
+#marketSave{background:var(--t-ink);color:white}
+#marketPublish{background:var(--t-copper);color:white}
+#marketWhatsApp{background:#edf2ed;color:var(--t-ink)}
+.marketState{margin-top:10px;font-size:.7rem;color:#6f8079;line-height:1.45}
+.marketBadge{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:999px;
+  background:#edf2ed;
+  color:var(--t-green);
+  font-size:.58rem;
+  font-weight:900;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+@media(max-width:820px){
+  .marketModalBody{grid-template-columns:1fr}
+  .marketMapPane{min-height:320px}
+  .marketFields{grid-template-columns:1fr}
+  .marketFields .full{grid-column:auto}
+}
+
+
+/* ===== TerraOS 10.6 · Capa SIG Comercio Predial ===== */
+.marketPriority{
+  width:100%;
+  margin:14px 0 4px;
+  display:grid;
+  grid-template-columns:44px 1fr auto;
+  gap:12px;
+  align-items:center;
+  border:1px solid rgba(180,123,82,.32);
+  border-radius:16px;
+  padding:14px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(223,201,163,.38),transparent 32%),
+    linear-gradient(145deg,#fff,#f7f1e7);
+  color:var(--t-ink);
+  cursor:pointer;
+  text-align:left;
+  box-shadow:0 8px 22px rgba(27,55,48,.06);
+}
+.marketPriority:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(27,55,48,.10)}
+.marketPriorityIcon{
+  width:42px;height:42px;border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--t-ink);color:#fff;font-size:1.05rem
+}
+.marketPriority small{
+  display:block;
+  color:var(--t-copper);
+  font-size:.57rem;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+.marketPriority strong{
+  display:block;
+  font-family:Georgia,serif;
+  font-size:1.18rem;
+  font-weight:500;
+  margin:2px 0;
+}
+.marketPriority em{
+  display:block;
+  font-style:normal;
+  color:#71817b;
+  font-size:.68rem;
+  line-height:1.35;
+}
+.marketPriority b{
+  color:var(--t-green);
+  font-size:.72rem;
+  white-space:nowrap;
+}
+#marketLayerButton span{
+  float:right;
+  min-width:20px;
+  padding:1px 6px;
+  border-radius:999px;
+  background:#edf2ed;
+  color:var(--t-green);
+  text-align:center;
+  font-size:.58rem;
+}
+.marketLayerLegend{
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  padding:7px 10px;
+  border-radius:10px;
+  background:rgba(255,255,255,.82);
+  color:#5f736b;
+  font-size:.62rem;
+}
+.marketLayerLegend i{
+  display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px
+}
+.marketLayerLegend .sale i{background:#b47b52}
+.marketLayerLegend .buy i{background:#2f7b67}
+.marketPopup{
+  width:min(300px,72vw);
+  color:#29493f;
+}
+.marketPopup .photo{
+  width:100%;
+  height:145px;
+  object-fit:cover;
+  border-radius:12px;
+  display:block;
+  margin-bottom:10px;
+  background:#edf2ed;
+}
+.marketPopup .photoPlaceholder{
+  height:120px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#e9efe9,#dcc7a2);
+  color:#60736d;
+  font-family:Georgia,serif;
+  font-size:1.05rem;
+  margin-bottom:10px;
+}
+.marketPopup .tag{
+  display:inline-block;
+  padding:4px 7px;
+  border-radius:999px;
+  background:#edf2ed;
+  color:var(--t-green);
+  font-size:.55rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.marketPopup h3{
+  margin:6px 0 5px;
+  font-family:Georgia,serif;
+  font-weight:500;
+  font-size:1.22rem;
+  color:var(--t-ink);
+}
+.marketPopup p{margin:4px 0;font-size:.7rem;line-height:1.4;color:#667a72}
+.marketPopup .price{font-weight:900;color:var(--t-copper);font-size:.82rem}
+.marketPopup a{
+  display:inline-block;
+  margin-top:8px;
+  padding:8px 10px;
+  border-radius:9px;
+  background:var(--t-ink);
+  color:#fff;
+  text-decoration:none;
+  font-size:.67rem;
+  font-weight:900;
+}
+
+
+/* ===== TerraOS 10.7 · navegación Comercio Predial ===== */
+.primaryNav .marketNavLink,
+.moduleNav .marketNavLink{
+  color:var(--t-copper,#b47b52);
+  border:1px solid rgba(180,123,82,.22);
+  background:rgba(246,241,231,.62);
+}
+.primaryNav .marketNavLink:hover,
+.moduleNav .marketNavLink:hover{
+  background:#f2e7d8;
+  color:var(--t-ink,#123a32);
+}
+
+/* TerraOS 11 · entrada orientada a decisiones */
+.launchPromise{display:grid;gap:7px;margin:14px 0 18px}.launchPromise button{display:grid;grid-template-columns:30px 1fr;column-gap:9px;align-items:center;text-align:left;border:1px solid var(--t-line);background:rgba(255,255,255,.72);border-radius:13px;padding:10px 11px;color:var(--t-ink);cursor:pointer}.launchPromise button:hover{background:#fff;transform:translateY(-1px)}.launchPromise span{grid-row:1/3;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#edf2ed;color:var(--t-green);font-size:.58rem;font-weight:900}.launchPromise strong{font-family:Georgia,serif;font-size:.9rem;font-weight:500}.launchPromise small{color:#72837c;font-size:.62rem;line-height:1.3}.loading button,.loading input,.loading select{cursor:progress}.loading #notice:before{content:'Procesando · ';font-weight:900;color:var(--t-copper)}
+
+.marketPopup .price small{font-size:.62rem;color:#7b8b84}.marketInfo{margin:9px 0;padding:9px 10px;border-radius:10px;background:#f8f7f2;border:1px solid var(--t-line)}.marketInfo>strong{display:block;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t-green);margin-bottom:4px}.marketInfo p{margin:0!important}.marketInfo.territorial{background:#edf4ef}.marketInfo.pending{background:#fff7e8}.marketInfo.pending>strong{color:var(--t-copper)}.marketFact{padding:5px 0;border-top:1px solid rgba(18,58,50,.08)}.marketFact:first-of-type{border-top:0}.marketFact b{display:block;font-size:.62rem;color:#385b51}.marketFact span{font-size:.66rem;line-height:1.35;color:#61746d}
+
+
+/* Ajuste 11.1 · municipio centrado y visor más limpio */
+.mapMunicipalityChip{
+  position:absolute;
+  top:14px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:505;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1px;
+  padding:7px 14px 8px;
+  background:rgba(250,248,242,.76);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.82);
+  border-radius:999px;
+  box-shadow:var(--t-soft-shadow);
+  text-align:center;
+}
+.mapMunicipalityChip span{
+  font-size:.55rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:#7a8a84;
+  font-weight:900;
+}
+.mapMunicipalityChip strong{
+  font-family:Georgia,serif;
+  font-size:1rem;
+  line-height:1;
+  color:var(--t-ink);
+  font-weight:700;
+}
+.mapTop{
+  top:14px;
+  left:14px;
+  gap:8px;
+}
+.mapLabel{
+  min-width:190px;
+  padding:10px 12px;
+}
+.mapLabel>span:not(.dot){
+  font-family:Inter,ui-sans-serif,sans-serif;
+  font-size:.74rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:#5d746c;
+  font-weight:900;
+}
+.mapLabel small{
+  margin:4px 0 0 15px;
+  font-size:.62rem;
+}
+#extent{
+  padding:10px 12px;
+  font-size:.72rem;
+}
+.mapTools{
+  top:70px;
+  right:14px;
+  width:182px;
+  gap:6px;
+}
+.toolStep{
+  border-radius:13px;
+}
+.toolStep:nth-child(2){margin-left:8px}
+.toolStep:nth-child(3){margin-left:16px}
+.toolStep:nth-child(4){margin-left:24px}
+.toolStep summary{
+  padding:9px 11px;
+  font-size:.70rem;
+}
+.toolGroup{
+  gap:5px;
+  padding:0 7px 7px;
+}
+.mapTools button{
+  padding:8px 8px;
+  font-size:.67rem;
+}
+#marketLayerButton span{
+  display:inline-grid;
+  place-items:center;
+  min-width:18px;
+  margin-left:6px;
+}
+.mapLegendInline{
+  position:relative;
+  width:100%;
+  border:1px solid var(--t-line);
+  border-radius:10px;
+  background:#fff;
+  overflow:hidden;
+  margin-top:2px;
+}
+.mapLegendInline summary{
+  list-style:none;
+  cursor:pointer;
+  padding:8px 9px;
+  font-size:.66rem;
+  font-weight:800;
+  color:#526d64;
+}
+.mapLegendInline summary::-webkit-details-marker{display:none}
+.mapLegendInline > div,
+.mapLegendInline > p{
+  padding:0 9px 8px;
+  margin:0;
+  font-size:.66rem;
+}
+.mapBottom{
+  min-height:28px;
+  padding:0 14px;
+  font-size:.60rem;
+}
+#igacStatus{
+  right:14px;
+  bottom:34px;
+}
+
+/* Gestión del proyecto · explicación vertical */
+.projectFlow{
+  display:grid;
+  gap:8px;
+  margin:14px 0 16px;
+}
+.projectStep{
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:10px;
+  align-items:start;
+  padding:11px 12px;
+  background:rgba(255,255,255,.72);
+  border:1px solid var(--t-line);
+  border-radius:13px;
+}
+.projectStep span{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#edf2ed;
+  color:var(--t-green);
+  font-weight:900;
+  font-size:.74rem;
+}
+.projectStep strong{
+  display:block;
+  font-family:Georgia,serif;
+  font-size:.96rem;
+  font-weight:500;
+  color:var(--t-ink);
+  margin-bottom:2px;
+}
+.projectStep small{
+  display:block;
+  color:#71817b;
+  line-height:1.35;
+  font-size:.68rem;
+}
+
+@media (max-width:1280px){
+  header{gap:8px}
+  .primaryNav a{padding:8px 7px;font-size:.58rem}
+  .municipalityMenu summary{padding:8px 10px;font-size:.74rem}
+  .soilHeaderBtn,#menuBtn{padding:9px 10px;font-size:.78rem}
+  main{grid-template-columns:minmax(300px,340px) minmax(0,1fr)}
+}
+@media(max-width:1100px){
+  .brand small{display:none}
+  .primaryNav{display:none}
+}
+@media(max-width:820px){
+  .mapMunicipalityChip{
+    top:60px;
+    width:auto;
+    max-width:calc(100% - 32px);
+  }
+  .mapTop{
+    top:12px;
+    left:12px;
+  }
+  .mapTools{
+    top:108px;
+    right:10px;
+    width:164px;
+  }
+}

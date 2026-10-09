@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TerraOS 11.1 · Gestión territorial</title>
+<link rel="icon" href="assets/terraos-amonita-v2.webp">
+
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="vendor/leaflet.draw.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="terraos-97.css">
+<link rel="stylesheet" href="terraos-98.css">
+<link rel="stylesheet" href="terraos-100.css">
+
+<link rel="stylesheet" href="terraos-index.css">
+</head>
+
+<body>
+<a class="skip" href="#panel">Ir a Gestión del Suelo</a>
+
+<header>
+  <a class="brand" href="index.html">
+    <img src="assets/terraos-amonita-v2.webp" alt="Amonita">
+    <span>Terra<span class="os">OS</span><small>INTELIGENCIA TERRITORIAL</small></span>
+    <b>11.1</b>
+  </a>
+
+  <details class="municipalityMenu">
+    <summary>Municipios</summary>
+    <div class="municipalityPanel">
+      <label for="municipalitySelect">Municipio</label>
+      <select id="municipalitySelect"></select>
+      <div id="municipalityStatus" class="municipalityStatus"></div>
+    </div>
+  </details>
+
+  <nav class="primaryNav" aria-label="Actividades principales">
+    <a href="consultoria.html">NUESTROS SERVICIOS</a>
+    <a class="marketNavLink" href="index.html?soil=1&market=1#marketProjectHeading">COMERCIO PREDIAL</a>
+    <a href="arca.html">TIENDA ARCA</a>
+    <a href="proyecto.html">GESTIONE SU PROYECTO</a>
+    <a href="territorio.html">NUESTRO TERRITORIO</a>
+  </nav>
+
+  <button id="soilHeaderBtn" class="soilHeaderBtn" type="button" aria-controls="panel" aria-expanded="true">Gestión del suelo</button>
+  <button id="menuBtn" aria-haspopup="dialog">▦ Explorar</button>
+</header>
+
+<div class="territorialPath" aria-label="Ruta de decisión">
+  Territorio <span>›</span> <b data-municipality-name>Villa de Leyva</b>
+  <span>›</span> Módulo <span>›</span> <b>Gestión del suelo</b>
+  <span>›</span> Instrumento <span>›</span> <b>Mapa + reglas</b>
+  <span>›</span> Decisión
+</div>
+
+<main>
+  <aside id="panel">
+    <p class="eyebrow">ACTIVIDAD PRINCIPAL</p>
+    <h1>Gestión del Suelo</h1>
+    <p class="intro"><strong>Entienda el suelo antes de decidir.</strong> Consulte un predio, encuentre suelo compatible o publíquelo en el mercado territorial.</p>
+    <div class="launchPromise" aria-label="Qué puede hacer en TerraOS">
+      <button type="button" data-go-soil="consult"><span>01</span><strong>Entender un predio</strong><small>Consulte reglas, determinantes y riesgo.</small></button>
+      <button type="button" data-go-soil="search"><span>02</span><strong>Encontrar suelo</strong><small>Busque áreas compatibles con su actividad.</small></button>
+      <button type="button" data-go-soil="market"><span>03</span><strong>Comercio predial</strong><small>Venda o publique interés de compra con contexto territorial.</small></button>
+    </div>
+
+
+    <a class="contactInline" href="consultoria.html">Consultar con el urbanista · Frasser Zambrano ↗</a>
+
+    <div class="tabs soilTabs" role="tablist" aria-label="Gestión del Suelo">
+      <button id="consultTab" class="active" role="tab" aria-selected="true">1. Consultar reglas</button>
+      <button id="searchTab" role="tab" aria-selected="false">2. Buscar suelo</button>
+      <button id="projectTab" role="tab" aria-selected="false">3. Gestionar proyecto</button>
+    </div>
+
+    <section id="consult">
+      <label for="parcelId">Identificador del predio</label>
+      <div class="inline">
+        <input id="parcelId" list="parcelList" placeholder="Ej. P-0001">
+        <datalist id="parcelList"></datalist>
+        <button id="go" class="primary">Consultar</button>
+      </div>
+
+      <div class="tools">
+        <button id="draw">◇ Dibujar área</button>
+        <button id="edit">Editar vértices</button>
+        <button id="clear">Limpiar</button>
+      </div>
+
+      <details>
+        <summary>Importar geometría</summary>
+        <p>GeoJSON en WGS84 (EPSG:4326). Admite polígonos con huecos y multipolígonos.</p>
+        <input id="geometryFile" type="file" accept=".json,.geojson">
+      </details>
+
+      <p class="hint">La geometría es la pregunta espacial. TerraOS cruza ese lugar con POT, determinantes, riesgo y demás capas disponibles.</p>
+    </section>
+
+    <section id="search" hidden>
+      <p>Busca áreas del territorio que cumplan condiciones y atributos seleccionados.</p>
+      <div id="criteria"></div>
+      <button id="addCriteria">+ Añadir condición</button>
+
+      <div class="two">
+        <label>Combinar
+          <select id="logic"><option value="AND">Y · todas</option><option value="OR">O · cualquiera</option></select>
+        </label>
+        <label>Resultado
+          <select id="whole"><option value="true">Predios completos</option><option value="false">Porciones de predios</option></select>
+        </label>
+      </div>
+
+      <label>Superficie mínima resultante (m²)
+        <input id="minArea" type="number" min="0" value="0">
+      </label>
+      <button id="runSearch" class="primary wide">Buscar suelo</button>
+      <p class="hint">Coincidir con filtros no certifica viabilidad. Analice cada resultado para revisar restricciones y vacíos.</p>
+
+      <div id="searchResults"></div>
+      <button id="buySearchCTA" class="marketDecision" type="button" style="margin-top:12px">
+        <span class="marketIcon">C</span>
+        <span>
+          <strong>Publicar interés de compra con estos criterios</strong>
+          <small>La solicitud resumirá los filtros utilizados en esta búsqueda.</small>
+        </span>
+        <em>Continuar ↗</em>
+      </button>
+
+    </section>
+
+    <section id="project" hidden aria-labelledby="projectHeading">
+      <p class="eyebrow">PROCESO INDEPENDIENTE</p>
+      <h2 id="projectHeading">Gestionar proyecto</h2>
+      <p>Organiza las dimensiones y características del proyecto, diligencia el Formulario Único Nacional y prepara los documentos de trabajo.</p>
+
+      <div class="projectFlow" aria-label="Ruta de gestión del proyecto">
+        <article class="projectStep">
+          <span>1</span>
+          <div><strong>Defina el proyecto</strong><small>Área, altura, uso, actuación y fecha de consulta.</small></div>
+        </article>
+        <article class="projectStep">
+          <span>2</span>
+          <div><strong>Relacione el predio</strong><small>Conecte la propuesta con la lectura territorial ya obtenida.</small></div>
+        </article>
+        <article class="projectStep">
+          <span>3</span>
+          <div><strong>Tome una decisión</strong><small>Desarrollar, vender el predio o buscar/comprar suelo compatible.</small></div>
+        </article>
+        <article class="projectStep">
+          <span>4</span>
+          <div><strong>Prepare la salida</strong><small>Genere formulario, ficha comercial o expediente de trabajo.</small></div>
+        </article>
+      </div>
+
+      <button id="marketPriority" class="marketPriority" type="button">
+        <span class="marketPriorityIcon">◈</span>
+        <span>
+          <small>PUNTO PRIORITARIO</small>
+          <strong>Comercio predial</strong>
+          <em>Publica un predio en venta o expresa interés de compra usando la lectura territorial ya obtenida.</em>
+        </span>
+        <b>Entrar ↗</b>
+      </button>
+
+      <details open>
+        <summary>Datos del proyecto</summary>
+        <div class="two">
+          <label>Área ocupada (m²)<input id="footprint" type="number" min="0"></label>
+          <label>Área construida (m²)<input id="floorArea" type="number" min="0"></label>
+          <label>Altura (m)<input id="height" type="number" min="0"></label>
+          <label>Pisos<input id="floors" type="number" min="0"></label>
+        </div>
+        <label>Fecha de consulta normativa<input id="asOf" type="date" value="2026-10-03"></label>
+        <div class="two">
+          <label>Uso propuesto
+            <select id="activity">
+              <option>Vivienda</option><option>Turismo</option><option>Conservacion</option>
+              <option>Comercio vecinal</option><option>Industria pesada</option>
+            </select>
+          </label>
+          <label>Actuación
+            <select id="action">
+              <option>Obra nueva</option><option>Ampliación</option><option>Reconstrucción</option>
+              <option>Uso existente sin obras</option><option>Conservación sin obras</option>
+            </select>
+          </label>
+        </div>
+        <button id="recalculate">Actualizar evaluación</button>
+      </details>
+
+
+      <section class="marketIntro" aria-labelledby="marketProjectHeading">
+        <p class="eyebrow">COMERCIO PREDIAL</p>
+        <h3 id="marketProjectHeading">¿Qué decisión quieres tomar con el suelo?</h3>
+        <p>
+          TerraOS puede convertir la lectura territorial en una ficha comercial.
+          La publicación resume la información obtenida en «Consultar reglas» y «Buscar suelo»,
+          sin reemplazar certificados, avalúos ni estudios jurídicos.
+        </p>
+
+        <div class="marketDecisionGrid">
+          <button class="marketDecision" id="sellCurrentParcel" type="button">
+            <span class="marketIcon">V</span>
+            <span>
+              <strong>Quiero vender este predio</strong>
+              <small>Usa la selección actual y resume condiciones territoriales, proyecto, ubicación y contacto.</small>
+            </span>
+            <em>Publicar ↗</em>
+          </button>
+
+          <button class="marketDecision" id="buyFromSearch" type="button">
+            <span class="marketIcon">C</span>
+            <span>
+              <strong>Me interesa comprar suelo como este</strong>
+              <small>Convierte los criterios de «Buscar suelo» en una solicitud de compra territorial.</small>
+            </span>
+            <em>Buscar ↗</em>
+          </button>
+
+          <button class="marketDecision" id="adminPublishParcel" type="button">
+            <span class="marketIcon">A</span>
+            <span>
+              <strong>Publicación directa del administrador</strong>
+              <small>Permite registrar una oferta o demanda aun cuando no exista una consulta previa.</small>
+            </span>
+            <em>Crear ↗</em>
+          </button>
+        </div>
+
+        <div class="marketShelf">
+          <div class="marketShelfHead">
+            <h3>Mercado predial local</h3>
+            <span>Prototipo · publicaciones guardadas en este navegador</span>
+          </div>
+          <div id="marketListings" class="marketListings"></div>
+        </div>
+      </section>
+
+      <div class="projectActions">
+        <a class="actionCard" href="formulario-unico.html"><span>FORMULARIO</span><strong>Formulario Único Nacional</strong><small>Diligenciamiento, guardado, recuperación y PDF de trabajo.</small></a>
+        <a class="actionCard" href="proyecto-licencia.html"><span>PROYECTO</span><strong>Generar proyecto de licencia</strong><small>Borrador editable para revisión profesional; no constituye licencia.</small></a>
+        <a class="actionCard" href="proyecto.html"><span>EXPEDIENTE</span><strong>Preparar documentos</strong><small>Organiza ficha, informe, anexos y entrega administrativa.</small></a>
+      </div>
+      <p class="hint">Esta actividad utiliza información territorial cuando corresponde, pero es independiente de «Consultar reglas» y «Buscar suelo».</p>
+    </section>
+
+    <section id="result" aria-live="polite"></section>
+    <div id="notice" role="status" aria-live="polite">Cargando capas…</div>
+  </aside>
+
+  <section class="mapWrap" aria-label="Mapa de consulta">
+    <div id="map"></div>
+
+    <div class="mapTop">
+      <div class="mapLabel">
+        <span class="dot"></span><span>Consulta territorial</span>
+        <small id="municipalityMapStatus">Paquete municipal pendiente</small>
+      </div>
+      <button id="extent">↗ Ver municipio</button>
+    </div>
+
+    <div class="mapMunicipalityChip" aria-label="Municipio consultado">
+      <span>Municipio consultado</span>
+      <strong data-municipality-name>Villa de Leyva</strong>
+    </div>
+
+    <div class="mapTools" aria-label="Herramientas progresivas del mapa">
+      <details class="toolStep" open>
+        <summary>1 · Contexto</summary>
+        <div class="toolGroup">
+          <button id="baseMenuButton">▦ Mapas base</button>
+          <button id="imageryButton">▧ Imágenes</button>
+          <button id="igacButton">▤ IGAC</button>
+        </div>
+      </details>
+
+      <details class="toolStep">
+        <summary>2 · Analizar</summary>
+        <div class="toolGroup">
+          <button id="decisionMenuButton">◈ Decisiones</button>
+          <button id="identifyButton" title="Pasar el cursor o pulsar para consultar las capas visibles">ⓘ Atributos activos</button>
+        </div>
+      </details>
+
+      <details class="toolStep">
+        <summary>3 · Selección</summary>
+        <div class="toolGroup">
+          <button id="fitSelection" disabled>◎ Centrar selección</button>
+          <button id="selectionActions" disabled>Selecciones</button>
+          <button id="marketLayerButton">⌂ Comercio predial <span id="marketLayerCount">0</span></button>
+        </div>
+      </details>
+
+      <details class="toolStep">
+        <summary>4 · Vista</summary>
+        <div class="toolGroup">
+          <button id="colorsButton">◐ Colores</button>
+          <button id="fullMap">⛶ Ampliar</button>
+          <details id="mapLegend" class="mapLegendInline">
+            <summary>▦ Capas activas</summary>
+            <div id="legendContent"></div>
+            <p><i id="legendSelection"></i> Selección activa · <span id="selectionCount">Sin selección</span></p>
+            <p class="hint">Borde azul discontinuo: coincidencias de búsqueda.</p>
+          </details>
+        </div>
+      </details>
+    </div>
+
+    <div id="imageryInfo" hidden></div>
+    <div id="igacStatus" class="remoteStatus" role="status">IGAC: sin consulta</div>
+    <div id="baseWarning" hidden role="status"></div>
+
+    <div class="mapBottom">
+      <span>◈ <b id="count">1.200</b> predios</span>
+      <span>Capas territoriales · EPSG:9377 · IGAC bajo consulta</span>
+    </div>
+  </section>
+</main>
+
+
+<dialog id="marketModal">
+  <div class="marketModalHead">
+    <div>
+      <small id="marketModeLabel">COMERCIO PREDIAL</small>
+      <h2 id="marketTitle">Publicar predio</h2>
+    </div>
+    <button id="marketClose" type="button" aria-label="Cerrar">✕</button>
+  </div>
+
+  <div class="marketModalBody">
+    <div class="marketMapPane">
+      <div id="marketMap"></div>
+      <div class="marketMapCaption">
+        <small>LOCALIZACIÓN COMERCIAL</small>
+        <strong id="marketMapTitle">Ubique el predio o zona de interés</strong>
+        <p>Esri World Imagery. Haga clic en el mapa para fijar la ubicación de la publicación.</p>
+      </div>
+    </div>
+
+    <div class="marketFormPane">
+      <div class="marketSummary">
+        <small>RESUMEN TERRITORIAL</small>
+        <strong id="marketSummaryTitle">Sin consulta asociada</strong>
+        <p id="marketSummaryText">Puede crear una publicación directa o regresar a Consultar reglas / Buscar suelo para incorporar contexto territorial.</p>
+      </div>
+
+      <span class="marketBadge" id="marketStatusBadge">BORRADOR</span>
+
+      <div class="marketFields" style="margin-top:12px">
+        <label>Tipo de publicación
+          <select id="marketType">
+            <option value="venta">Predio en venta</option>
+            <option value="compra">Interés de compra</option>
+          </select>
+        </label>
+
+        <label>Identificador / referencia
+          <input id="marketParcelRef" placeholder="Ej. P-0001">
+        </label>
+
+        <label>Precio / presupuesto (COP)
+          <input id="marketPrice" type="number" min="0" step="1000" placeholder="Ej. 350000000">
+        </label>
+
+        <label>Área aproximada (m²)
+          <input id="marketArea" type="number" min="0" step="0.01" placeholder="Ej. 1200">
+        </label>
+
+        <label>Nombre de contacto
+          <input id="marketContactName" placeholder="Nombre o razón de contacto">
+        </label>
+
+        <label>Teléfono / WhatsApp
+          <input id="marketPhone" placeholder="+57 3xx xxx xxxx">
+        </label>
+
+        <label class="full">Título comercial
+          <input id="marketCommercialTitle" placeholder="Ej. Predio con potencial turístico en Villa de Leyva">
+        </label>
+
+        <label class="full">Descripción comercial
+          <textarea id="marketDescription" placeholder="Resuma ubicación, acceso, oportunidad, condiciones relevantes y aquello que debe verificarse."></textarea>
+        </label>
+
+        <label>Latitud
+          <input id="marketLat" readonly>
+        </label>
+
+        <label>Longitud
+          <input id="marketLng" readonly>
+        </label>
+
+        <label class="full">Fotografías
+          <input id="marketPhotos" type="file" accept="image/*" multiple>
+        </label>
+      </div>
+
+      <div id="marketPhotoPreview" class="marketPhotoPreview"></div>
+
+      <div class="marketActions">
+        <button id="marketSave" type="button">Guardar borrador</button>
+        <button id="marketPublish" type="button">Publicar localmente</button>
+        <button id="marketWhatsApp" type="button">Compartir por WhatsApp</button>
+      </div>
+      <div id="marketState" class="marketState">
+        Las publicaciones de esta versión se almacenan localmente. En producción deben pasar por backend, validación y moderación.
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="modal">
+  <div class="dialogHead">
+    <h2 id="modalTitle"></h2>
+    <button id="closeModal" aria-label="Cerrar">✕</button>
+  </div>
+  <div id="modalBody"></div>
+</dialog>
+
+<script src="vendor/leaflet.js"></script>
+
+<script src="vendor/leaflet.draw.js"></script>
+<script src="data/bundle.js"></script>
+<script src="data/aportes-aprobados.js"></script>
+<script src="config.js"></script>
+<script src="data/comercio-predial/comercio-predial.js"></script>
+<script src="app.js"></script>
+<script src="app-95.js"></script>
+<script src="app-96.js"></script>
+<script src="app-97.js"></script>
+<script src="app-100.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="core/bootstrap.js"></script>
+<script src="market/market-ui.js"></script>
+<script src="market/market-layer.js"></script>
+
+</body>
+</html>
