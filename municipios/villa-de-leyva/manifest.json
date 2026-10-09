@@ -1,0 +1,9 @@
+{
+  "id": "villa-de-leyva",
+  "name": "Villa de Leyva",
+  "status": "prepared",
+  "sourceMode": "municipal-package",
+  "mapBase": "shared",
+  "layers": [],
+  "note": "Directorio preparado para incorporar capas municipales validadas."
+}

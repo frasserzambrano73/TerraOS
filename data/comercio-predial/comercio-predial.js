@@ -1,0 +1,73 @@
+/* TerraOS · Capa demostrativa de Comercio Predial */
+window.TERRA_COMERCIO_PREDIAL = {
+  "type": "FeatureCollection",
+  "name": "comercio_predial",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "MP-DEMO-001",
+      "properties": {
+        "id_publicacion": "MP-DEMO-001",
+        "tipo": "venta",
+        "estado": "publicado_demo",
+        "es_demo": true,
+        "titulo": "Predio demostrativo con potencial para actividad turística",
+        "id_predio": "P-DEMO-001",
+        "municipio": "Villa de Leyva",
+        "departamento": "Boyacá",
+        "precio_cop": 420000000,
+        "area_aprox_m2": 8350,
+        "precio_m2_cop": 50299,
+        "contacto": "Administrador TerraOS · Demo",
+        "telefono": "+57 314 442 9234",
+        "whatsapp": "573144429234",
+        "descripcion_comercial": "Predio demostrativo publicado desde el módulo Gestión del Suelo. La ficha resume condiciones territoriales ficticias del modelo de prueba y sirve para validar el flujo de comercio predial dentro de TerraOS.",
+        "resumen_pot": "Uso demostrativo compatible con actividad turística rural condicionada, sujeto a validación con la normativa real del POT.",
+        "resumen_determinantes": "Sin determinantes restrictivas críticas en el modelo de prueba. Debe verificarse información ambiental, hídrica y patrimonial real.",
+        "resumen_riesgo": "Condición demostrativa de amenaza media. La viabilidad real requiere consulta y estudios oficiales.",
+        "uso_propuesto": "Turismo",
+        "actuacion": "Obra nueva",
+        "acceso": "Acceso vehicular demostrativo desde vía local",
+        "servicios": "Disponibilidad por verificar",
+        "fotografia_principal": "assets/predio-rural.webp",
+        "fuente": "TerraOS · proyecto demostrativo",
+        "fecha_publicacion": "2026-10-05",
+        "responsable_publicacion": "Administrador TerraOS",
+        "nota_legal": "Publicación demostrativa. No corresponde a un predio real en venta, no constituye avalúo, certificado urbanístico ni oferta vinculante."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.52718,
+              5.63582
+            ],
+            [
+              -73.52626,
+              5.63586
+            ],
+            [
+              -73.52618,
+              5.63515
+            ],
+            [
+              -73.52708,
+              5.63509
+            ],
+            [
+              -73.52718,
+              5.63582
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+};

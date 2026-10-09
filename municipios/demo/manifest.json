@@ -1,0 +1,18 @@
+{
+  "id": "demo",
+  "name": "Demo",
+  "status": "active",
+  "sourceMode": "current-terraos-demo",
+  "mapBase": "shared",
+  "layers": [
+    "Predios",
+    "POT / reglamentación",
+    "Clasificación del suelo",
+    "Ríos",
+    "Rondas hídricas",
+    "Movimientos en masa",
+    "Inundaciones",
+    "Avenidas torrenciales",
+    "Límite municipal"
+  ]
+}

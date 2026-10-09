@@ -1,0 +1,303 @@
+{
+  "version": "9.2.0",
+  "fecha": "2026-10-04",
+  "src": "EPSG:9377",
+  "proj4": "+proj=tmerc +lat_0=4 +lon_0=-73 +k=0.9992 +x_0=5000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs +type=crs",
+  "archivo": "terraos_municipio_demo.gpkg",
+  "sha256": "6cf5bb78d5d0659ffeeef51a1f85d44f859a1e16611c9db8b918489f98d70007",
+  "simulado": true,
+  "inventario": [
+    {
+      "capa": "gr_movimientos_masa",
+      "geometria": "MultiPolygon",
+      "src": "EPSG:9377",
+      "extension": [
+        4937079.70196079,
+        2179316.19452008,
+        4941755.43256188,
+        2186020.46827189
+      ],
+      "cantidad": 12,
+      "campos": {
+        "id_zona": "str",
+        "fenomeno": "str",
+        "nivel_amenaza": "str",
+        "ocupacion": "str",
+        "condicion_riesgo": "str",
+        "nivel_riesgo": "str",
+        "mitigabilidad": "str",
+        "uso_posible": "str",
+        "uso_restringido": "str",
+        "uso_prohibido": "str",
+        "requiere_estudio": "int",
+        "tipo_estudio": "str",
+        "medida_requerida": "str",
+        "condicion_licencia": "str",
+        "estado_evaluacion": "str",
+        "siguiente_paso": "str",
+        "regla_id": "str",
+        "fuente_simulada": "str"
+      },
+      "geometrias_reparadas": [],
+      "area_suma_m2": 21076403.722084545,
+      "area_union_m2": 21076403.722084545
+    },
+    {
+      "capa": "gr_inundaciones",
+      "geometria": "MultiPolygon",
+      "src": "EPSG:9377",
+      "extension": [
+        4938376.52925374,
+        2178568.6359257,
+        4939817.57419018,
+        2186126.05707309
+      ],
+      "cantidad": 12,
+      "campos": {
+        "id_zona": "str",
+        "fenomeno": "str",
+        "nivel_amenaza": "str",
+        "ocupacion": "str",
+        "condicion_riesgo": "str",
+        "nivel_riesgo": "str",
+        "mitigabilidad": "str",
+        "uso_posible": "str",
+        "uso_restringido": "str",
+        "uso_prohibido": "str",
+        "requiere_estudio": "int",
+        "tipo_estudio": "str",
+        "medida_requerida": "str",
+        "condicion_licencia": "str",
+        "estado_evaluacion": "str",
+        "siguiente_paso": "str",
+        "regla_id": "str",
+        "fuente_simulada": "str"
+      },
+      "geometrias_reparadas": [],
+      "area_suma_m2": 6435898.314456009,
+      "area_union_m2": 6435898.314456008
+    },
+    {
+      "capa": "gr_avenidas_torrenciales",
+      "geometria": "MultiPolygon",
+      "src": "EPSG:9377",
+      "extension": [
+        4938466.42074462,
+        2178568.6359257,
+        4939727.58066016,
+        2186126.05707309
+      ],
+      "cantidad": 12,
+      "campos": {
+        "id_zona": "str",
+        "fenomeno": "str",
+        "nivel_amenaza": "str",
+        "ocupacion": "str",
+        "condicion_riesgo": "str",
+        "nivel_riesgo": "str",
+        "mitigabilidad": "str",
+        "uso_posible": "str",
+        "uso_restringido": "str",
+        "uso_prohibido": "str",
+        "requiere_estudio": "int",
+        "tipo_estudio": "str",
+        "medida_requerida": "str",
+        "condicion_licencia": "str",
+        "estado_evaluacion": "str",
+        "siguiente_paso": "str",
+        "regla_id": "str",
+        "fuente_simulada": "str"
+      },
+      "geometrias_reparadas": [],
+      "area_suma_m2": 5059579.151499756,
+      "area_union_m2": 5059579.151499756
+    },
+    {
+      "capa": "pot_reglamentacion",
+      "geometria": "MultiPolygon",
+      "src": "EPSG:9377",
+      "extension": [
+        4934853.12088671,
+        2178568.6359257,
+        4943466.21236531,
+        2186126.05707309
+      ],
+      "cantidad": 110,
+      "campos": {
+        "clase_suelo": "str",
+        "uso_principal": "str",
+        "usos_compatibles": "str",
+        "usos_condicionados": "str",
+        "usos_prohibidos": "str",
+        "tratamiento": "str",
+        "ic_max": "float",
+        "io_max": "float",
+        "altura_max_m": "float",
+        "pisos_max": "int",
+        "area_min_lote_m2": "int",
+        "frente_min_m": "int",
+        "retiro_frontal_m": "int",
+        "retiro_lateral_m": "int",
+        "retiro_posterior_m": "int",
+        "densidad_max_viv_ha": "int",
+        "norma_id": "str",
+        "fuente_simulada": "str",
+        "id_zona": "str",
+        "condicion_riesgo": "str",
+        "condicionamiento": "str",
+        "zonas_riesgo": "str",
+        "estado_evaluacion": "str"
+      },
+      "geometrias_reparadas": [],
+      "area_suma_m2": 50000000.00000131,
+      "area_union_m2": 50000000.00000131
+    },
+    {
+      "capa": "det_rio",
+      "geometria": "LineString",
+      "src": "EPSG:9377",
+      "extension": [
+        4938796.02287785,
+        2178569.44877226,
+        4939397.60438338,
+        2186087.97797382
+      ],
+      "cantidad": 1,
+      "campos": {
+        "nombre": "str",
+        "distancia_m": "int",
+        "restriccion": "str",
+        "usos_admitidos": "str",
+        "usos_prohibidos": "str",
+        "condicionamiento": "str",
+        "fuente_simulada": "str",
+        "id_elemento": "str",
+        "tipo_determinante": "str"
+      },
+      "geometrias_reparadas": [],
+      "area_suma_m2": 0.0,
+      "area_union_m2": 0.0
+    },
+    {
+      "capa": "det_ronda_30m",
+      "geometria": "MultiPolygon",
+      "src": "EPSG:9377",
+      "extension": [
+        4938766.05904755,
+        2178569.36828431,
+        4939427.60222673,
+        2186092.5339946
+      ],
+      "cantidad": 1,
+      "campos": {
+        "nombre": "str",
+        "distancia_m": "int",
+        "restriccion": "str",
+        "usos_admitidos": "str",
+        "usos_prohibidos": "str",
+        "condicionamiento": "str",
+        "fuente_simulada": "str",
+        "id_elemento": "str",
+        "tipo_determinante": "str"
+      },
+      "geometrias_reparadas": [],
+      "area_suma_m2": 460113.6064461172,
+      "area_union_m2": 460113.6064461172
+    },
+    {
+      "capa": "limite_municipal",
+      "geometria": "MultiPolygon",
+      "src": "EPSG:9377",
+      "extension": [
+        4934853.12088671,
+        2178568.6359257,
+        4943466.21236531,
+        2186126.05707309
+      ],
+      "cantidad": 1,
+      "campos": {
+        "id_municipio": "str",
+        "nombre": "str",
+        "area_ha": "float",
+        "fuente_simulada": "str"
+      },
+      "geometrias_reparadas": [],
+      "area_suma_m2": 50000000.00000147,
+      "area_union_m2": 50000000.00000147
+    },
+    {
+      "capa": "clasificacion_suelo",
+      "geometria": "MultiPolygon",
+      "src": "EPSG:9377",
+      "extension": [
+        4934853.12088671,
+        2178568.6359257,
+        4943466.21236531,
+        2186126.05707309
+      ],
+      "cantidad": 3,
+      "campos": {
+        "id_clase": "str",
+        "clase_suelo": "str",
+        "clase_legal": "str",
+        "subcategoria": "str",
+        "area_ha": "float",
+        "fuente_simulada": "str"
+      },
+      "geometrias_reparadas": [],
+      "area_suma_m2": 50000000.00000147,
+      "area_union_m2": 50000000.00000148
+    },
+    {
+      "capa": "predios",
+      "geometria": "MultiPolygon",
+      "src": "EPSG:9377",
+      "extension": [
+        4934853.12088671,
+        2178568.6359257,
+        4943466.21236531,
+        2186126.05707309
+      ],
+      "cantidad": 1200,
+      "campos": {
+        "clase_suelo": "str",
+        "uso_principal": "str",
+        "usos_compatibles": "str",
+        "usos_condicionados": "str",
+        "usos_prohibidos": "str",
+        "tratamiento": "str",
+        "ic_max": "float",
+        "io_max": "float",
+        "altura_max_m": "float",
+        "pisos_max": "int",
+        "area_min_lote_m2": "int",
+        "frente_min_m": "int",
+        "retiro_frontal_m": "int",
+        "retiro_lateral_m": "int",
+        "retiro_posterior_m": "int",
+        "densidad_max_viv_ha": "int",
+        "norma_id": "str",
+        "fuente_simulada": "str",
+        "id_predio": "str",
+        "codigo_demo": "str",
+        "manzana_demo": "int",
+        "area_m2": "float",
+        "area_ha": "float",
+        "afecta_ronda": "int",
+        "area_ronda_m2": "float",
+        "porcentaje_ronda": "float",
+        "afecta_mm": "int",
+        "afecta_inundacion": "int",
+        "afecta_avenida": "int",
+        "condicion_riesgo": "str",
+        "requiere_estudio": "int",
+        "condicion_licencia": "str",
+        "estado_evaluacion": "str",
+        "observaciones": "str"
+      },
+      "geometrias_reparadas": [],
+      "area_suma_m2": 50000000.00000108,
+      "area_union_m2": 49999999.99999736
+    }
+  ]
+}

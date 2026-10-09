@@ -1,0 +1,9 @@
+{
+  "id": "tunja",
+  "name": "Tunja",
+  "status": "prepared",
+  "sourceMode": "municipal-package",
+  "mapBase": "shared",
+  "layers": [],
+  "note": "Directorio preparado para incorporar capas municipales validadas."
+}
